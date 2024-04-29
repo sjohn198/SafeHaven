@@ -15,18 +15,20 @@ function TableHeader() {
   
 function TableBody(props) {
   const rows = props.orderData.map((row, index) => {
-    return (
-      <tr key={index}>
-        <td>{row._id.toString()}</td>
-        <td>{row.product}</td>
-        <td>{row.quantity}</td>
-        <td>
-            <button onClick={() => props.removeOrder(index)}>
-              Delete
-            </button>
-          </td>
-      </tr>
-    );
+    if (row != undefined) {
+      return (
+        <tr key={index}>
+          <td>{row._id.toString()}</td>
+          <td>{row.product}</td>
+          <td>{row.quantity}</td>
+          <td>
+              <button onClick={() => props.removeOrder(index)}>
+                Delete
+              </button>
+            </td>
+        </tr>
+      );
+    }
   });
   return (
     <tbody>

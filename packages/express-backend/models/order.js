@@ -11,10 +11,10 @@ const OrderSchema = new mongoose.Schema(
       type: String, // [Number]
       required: true,
       trim: true,
-      validate(value) {
+      /* validate(value) {
         if (value.length < 2)
           throw new Error("Invalid quantity, must be at least 2 numbers.");
-      },
+      }, */
     },
   },
   { collection: "orders" } // Specify collection name

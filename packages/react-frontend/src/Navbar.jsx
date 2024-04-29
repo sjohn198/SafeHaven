@@ -30,10 +30,10 @@ function NavBar() {
         <div className="container">
             <nav className="navbar">
                 <ul className="nav-list">
-                    <li className="logo">Safe Haven Logo Her</li>
-                    <li><Link to="/inventory">Inventory</Link></li>
+                <li><Link to="/" style={{ textDecoration: 'none', color: 'red' }}>Safe Haven Logo Her</Link></li>
+                <li><Link to="/inventory">Inventory</Link></li>
                     <li className="dropdown">
-                        <a href="#">Orders</a>
+                        <a>Orders</a>
                         <ul className="dropdown-content">
                             <li className="dropdown-item">
                                 <Link to="/statistics">View Order Statistics</Link>
@@ -42,7 +42,7 @@ function NavBar() {
                                 <Link to="/manage-orders">Manage Orders</Link>
                             </li>
                             <li className="dropdown-item">
-                                <Link to="/view-orders">View Orders</Link>
+                                <Link to="/view-orders">&nbsp;&nbsp; View Orders</Link>
                             </li>
                         </ul>
                     </li>
@@ -60,7 +60,7 @@ function NavBar() {
 }
 
 function HomePage() {
-    return <h1 className="title">Home</h1>;
+    return <h1 className="title">Home page</h1>;
 }
 
 export default App;

@@ -9,7 +9,6 @@ function Form(props) {
   function handleChange(event) {
     const { name, value } = event.target;
     if (name === "quantity") {
-      console.log(name);
       setOrder({ product: order["product"], quantity: value });
     }      
     else setOrder({ product: value, quantity: order["quantity"] });

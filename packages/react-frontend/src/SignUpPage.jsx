@@ -36,6 +36,8 @@ function SignUpPage() {
   }
 
   function updateList(person) {
+    person.quantity = str(person.quantity);
+    console.log(person.quantity);
     postOrder(person)
       .then((res) => {
         if (res.status === 201) {

@@ -36,6 +36,10 @@ function Inventory() {
   }
 
   function updateList(person) {
+    if (typeof person.quantity === 'number') {
+        person.quantity = person.quantity.toString();
+    }
+    
     postOrder(person)
       .then((res) => {
         if (res.status === 201) {
@@ -78,7 +82,7 @@ function Inventory() {
 
   return (
     <div className="orderList">
-    <h1>Login:</h1>
+    <h1>Inventory:</h1>
       <Table
         orderData={orders}
         removeOrder={removeOneOrder}

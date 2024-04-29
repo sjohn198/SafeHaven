@@ -10,3 +10,6 @@ or run the development mode with
 ```
 npm run dev
 ```
+
+Also, make sure to create a .env file in express-backend and add 
+```MONGODB_URI = "your_connection_string"```
