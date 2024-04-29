@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Table from "./Table";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Inventory from "./Inventory";
-import Form from "./Form";
-import NavBar from "./Navbar"
-import "./MyApp.css";
+import React from "react";
+import NavBar from "./Components/Navbar"
 
 function MyApp() {
   return (
