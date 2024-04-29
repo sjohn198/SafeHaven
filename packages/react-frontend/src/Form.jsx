@@ -1,39 +1,41 @@
 import React, { useState } from "react";
 
 function Form(props) {
-  const [person, setPerson] = useState({
-    name: "",
-    job: ""
+  const [order, setOrder] = useState({
+    product: "",
+    quantity: ""
   });
 
   function handleChange(event) {
     const { name, value } = event.target;
-    if (name === "job")
-      setPerson({ name: person["name"], job: value });
-    else setPerson({ name: value, job: person["job"] });
+    if (name === "quantity") {
+      console.log(name);
+      setOrder({ product: order["product"], quantity: value });
+    }      
+    else setOrder({ product: value, quantity: order["quantity"] });
   }
 
   function submitForm() {
-    props.handleSubmit(person);
-    setPerson({ name: "", job: "" });
+    props.handleSubmit(order);
+    setOrder({ product: "", quantity: "" });
   }
 
   return (
     <form>
-      <label htmlFor="name">Name</label>
+      <label htmlFor="product">product</label>
       <input
         type="text"
-        name="name"
-        id="name"
-        value={person.name}
+        name="product"
+        id="product"
+        value={order.product}
         onChange={handleChange}
       />
-      <label htmlFor="job">Job</label>
+      <label htmlFor="quantity">quantity</label>
       <input
         type="text"
-        name="job"
-        id="job"
-        value={person.job}
+        name="quantity"
+        id="quantity"
+        value={order.quantity}
         onChange={handleChange}
       />
       <input type="button" value="Submit" onClick={submitForm} />
