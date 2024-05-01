@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOMClient from "react-dom/client";
 import MyApp from "./MyApp";
-import "./main.css";
+import "./Styles/main.css";
 
 
 // Create the container

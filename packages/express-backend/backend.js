@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import userService from "./services/user-service.js";
+import orderservice from "./services/order-service.js";
 
 const app = express();
 const port = 8000;
@@ -9,9 +9,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.delete("/users/:id", (req, res) => {
+app.delete("/orders/:id", (req, res) => {
   const id = req.params["id"];
-  userService.removeUser(id)
+  orderservice.removeOrder(id)
                 .then((result) => {
                   res.status(204).send(result);
                 })
@@ -20,9 +20,9 @@ app.delete("/users/:id", (req, res) => {
                 });
 });
 
-app.post("/users", (req, res) => {
+app.post("/orders", (req, res) => {
   const userToAdd = req.body;
-  userService.addUser(userToAdd)
+  orderservice.addOrder(userToAdd)
                .then((result) => {
                    res.status(201).send(result);
                })
@@ -31,9 +31,9 @@ app.post("/users", (req, res) => {
                });
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/orders/:id", (req, res) => {
   const id = req.params["id"];
-  userService.findUserById(id)
+  orderservice.findOrderById(id)
                .then((result) => {
                  if (result) {
                    res.send(result);
@@ -47,10 +47,10 @@ app.get("/users/:id", (req, res) => {
                });
 });
 
-app.get("/users", (req, res) => {
+app.get("/orders", (req, res) => {
   const job = req.query.job;
   const name = req.query.name;
-  userService.getUsers(name, job)
+  orderservice.getOrders(name, job)
                .then((result) => {
                    res.send(result);
                })
