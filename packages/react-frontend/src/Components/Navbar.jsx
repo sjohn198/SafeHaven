@@ -42,7 +42,7 @@ function NavBar() {
                                 <Link to="/manage-orders">Manage Orders</Link>
                             </li>
                             <li className="dropdown-item">
-                                <Link to="/view-orders">&nbsp;&nbsp; View Orders</Link>
+                                <Link to="/view-orders">&nbsp;&nbsp;Add Orders</Link>
                             </li>
                         </ul>
                     </li>
