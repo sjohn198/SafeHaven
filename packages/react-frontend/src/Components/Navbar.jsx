@@ -4,7 +4,7 @@ import Inventory from '../Views/Inventory';
 import LoginPage from '../Views/LoginPage';
 import SignUpPage from '../Views/SignUpPage';
 import ManageOrders from '../Views/ManageOrders';
-import ViewOrders from '../Views/ViewOrders';
+import ViewOrders from '../Views/AddOrders';
 import OrderStatistics from '../Views/OrderStatistics';
 import '../Styles/Navbar.css';
 
