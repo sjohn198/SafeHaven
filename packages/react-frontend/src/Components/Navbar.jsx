@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Inventory from '../Pages/Inventory';
-import LoginPage from '../Pages/LoginPage';
-import SignUpPage from '../Pages/SignUpPage';
-import ManageOrders from '../Pages/ManageOrders';
-import ViewOrders from '../Pages/ViewOrders';
-import OrderStatistics from '../Pages/OrderStatistics';
-import '../Styles/MyApp.css';
+import Inventory from '../Views/Inventory';
+import LoginPage from '../Views/LoginPage';
+import SignUpPage from '../Views/SignUpPage';
+import ManageOrders from '../Views/ManageOrders';
+import ViewOrders from '../Views/ViewOrders';
+import OrderStatistics from '../Views/OrderStatistics';
+import '../Styles/Navbar.css';
 
 function App() {
     return (
@@ -30,7 +30,7 @@ function NavBar() {
         <div className="container">
             <nav className="navbar">
                 <ul className="nav-list">
-                <li><Link to="/" style={{ textDecoration: 'none', color: 'red' }}>Safe Haven Logo Her</Link></li>
+                <li><Link to="/" style={{ textDecoration: 'none', color: 'red' }}>Safe Haven Logo Here</Link></li>
                 <li><Link to="/inventory">Inventory</Link></li>
                     <li className="dropdown">
                         <a>Orders</a>
