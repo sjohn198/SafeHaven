@@ -4,30 +4,30 @@ import Form from "../Components/Form";
 import "../Styles/Navbar.css";
 
 function Inventory() {
-  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetchOrders()
+    fetchProducts()
       .then((res) => res.json())
-      .then((json) => setOrders(json))
+      .then((json) => setProducts(json))
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  function removeOneOrder(index) {
-    let order_id = -1;
-    const updated = orders.filter((order, i) => {
+  function removeOneProduct(index) {
+    let product_id = -1;
+    const updated = products.filter((product, i) => {
       if (i === index) {
-        order_id = order["_id"];
+        product_id = product["_id"];
       }
       return i !== index;
     });
-    deleteOrder(order_id)
+    deleteProduct(product_id)
       .then((res) => res.status)
       .then((status) => {
         if (status === 204) {
-          setOrders(updated);
+          setProducts(updated);
         }
       })
       .catch((error) => {
@@ -35,12 +35,12 @@ function Inventory() {
       });
   }
 
-  function updateList(person) {
-    if (typeof person.quantity === 'number') {
-        person.quantity = person.quantity.toString();
+  function updateList(product) {
+    if (typeof product.quantity === 'number') {
+        product.quantity = product.quantity.toString();
     }
     
-    postOrder(person)
+    postProduct(product)
       .then((res) => {
         if (res.status === 201) {
           return res.json();
@@ -49,29 +49,29 @@ function Inventory() {
         }
       })
       .then((res) => {
-        setOrders([...orders, res]);
+        setProducts([...products, res]);
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  function fetchOrders() {
-    return fetch("http://localhost:8000/orders");
+  function fetchProducts() {
+    return fetch("http://localhost:8000/products");
   }
 
-  function postOrder(person) {
-    return fetch("http://localhost:8000/orders", {
+  function postProduct(product) {
+    return fetch("http://localhost:8000/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(person),
+      body: JSON.stringify(product),
     });
   }
 
-  function deleteOrder(id) {
-    const uri = `http://localhost:8000/orders/${id}`;
+  function deleteProduct(id) {
+    const uri = `http://localhost:8000/products/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: {
@@ -81,14 +81,13 @@ function Inventory() {
   }
 
   return (
-    <div className="orderList">
+    <div className="ProductList">
     <h1>Inventory:</h1>
       <Table
-        orderData={orders}
-        removeOrder={removeOneOrder}
+        productData={products}
+        removeProduct={removeOneProduct}
       />
       <Form handleSubmit={updateList} />
-      
     </div>
   );
 }

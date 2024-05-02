@@ -14,7 +14,7 @@ function TableHeader() {
 }
   
 function TableBody(props) {
-  const rows = props.orderData.map((row, index) => {
+  const rows = props.productData.map((row, index) => {
     if (row != undefined) {
       return (
         <tr key={index}>
@@ -22,7 +22,7 @@ function TableBody(props) {
           <td>{row.product}</td>
           <td>{row.quantity}</td>
           <td>
-              <button onClick={() => props.removeOrder(index)}>
+              <button onClick={() => props.removeProduct(index)}>
                 Delete
               </button>
             </td>
@@ -43,8 +43,8 @@ function TableBody(props) {
       <table>
         <TableHeader />
         <TableBody
-            orderData={props.orderData}
-            removeOrder={props.removeOrder}
+            productData={props.productData}
+            removeProduct={props.removeProduct}
         />
       </table>
     );

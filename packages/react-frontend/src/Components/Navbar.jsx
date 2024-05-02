@@ -4,11 +4,16 @@ import Inventory from '../Views/Inventory';
 import LoginPage from '../Views/LoginPage';
 import SignUpPage from '../Views/SignUpPage';
 import ManageOrders from '../Views/ManageOrders';
-import ViewOrders from '../Views/ViewOrders';
+import ViewOrders from '../Views/AddOrders';
 import OrderStatistics from '../Views/OrderStatistics';
+import ProfilePage from '../Views/Profile';
 import '../Styles/Navbar.css';
 
-function App() {
+
+function App() {    
+    const user = {
+        id: "663340b898b86ea44965feb0"
+    };
     return (
         <Router>
             <NavBar />
@@ -19,6 +24,7 @@ function App() {
                 <Route path="/manage-orders" element={<ManageOrders />} />
                 <Route path="/view-orders" element={<ViewOrders />} />
                 <Route path="/statistics" element={<OrderStatistics />} />
+                <Route path="/profile" element={<ProfilePage user_id={user}/>} />
                 <Route path="/" element={<HomePage />} />
             </Routes>
         </Router>
@@ -42,13 +48,14 @@ function NavBar() {
                                 <Link to="/manage-orders">Manage Orders</Link>
                             </li>
                             <li className="dropdown-item">
-                                <Link to="/view-orders">&nbsp;&nbsp;Add Orders</Link>
+                                <Link to="/view-orders">&nbsp;&nbsp;&nbsp;Add Orders</Link>
                             </li>
                         </ul>
                     </li>
                     <div className="left">
                         <li><Link to="/signup">Sign up</Link></li>
                         <li><Link to="/login">Login</Link></li>
+                        <li><Link to="/profile">Profile</Link></li>
                     </div>
                 </ul>
                 <div className="whiteBlock">
