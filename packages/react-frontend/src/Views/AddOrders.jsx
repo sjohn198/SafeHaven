@@ -3,7 +3,7 @@ import Table from "../Components/Table";
 import Form from "../Components/Form";
 import "../Styles/Navbar.css";
 
-function Inventory() {
+function AddOrders() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -92,4 +92,4 @@ function Inventory() {
   );
 }
 
-export default Inventory;
+export default AddOrders;
