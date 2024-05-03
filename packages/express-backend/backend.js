@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import orderservice from "./services/order-service.js";
+import productservice from "./services/product-service.js";
+import orderservice from "./services/order-service.js"
 
 const app = express();
 const port = 8000;

@@ -78,7 +78,7 @@ function ViewOrders() {
 
   return (
     <div className="orderList">
-      <h1>View Orders:</h1>
+      <h1>Add New Order:</h1>
       <Table
         orderData={orders}
         removeOrder={removeOneOrder}
