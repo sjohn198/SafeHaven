@@ -10,6 +10,11 @@ import ProfilePage from '../Views/Profile';
 import '../Styles/Navbar.css';
 
 
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+
 function App() {    
     const user = {
         id: "663340b898b86ea44965feb0"
