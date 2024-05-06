@@ -39,25 +39,6 @@ function addProduct(product) {
     { upsert: true, new: true }
   )
 }
-// function addProduct(product) {
-//   console.log(product)
-//   return ProductModel.findOne({ product: product.product }).then(
-//     (ExistingProduct) => {
-//       if (ExistingProduct) {
-//         ExistingProduct.quantity += product.quantity
-//         return ProductModel.findByIdAndUpdate(
-//           ExistingProduct._id,
-//           { quantity: ExistingProduct.quantity },
-//           { new: true }
-//         )
-//       } else {
-//         const ProductToAdd = new ProductModel(product)
-//         const promise = ProductToAdd.save()
-//         return promise
-//       }
-//     }
-//   )
-// }
 
 function findProductByProduct(product) {
   return ProductModel.find({ product: product })
