@@ -157,6 +157,55 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+//add_orders routes
+app.get("/orders", (req, res) => {
+  const id = req.query.id;
+  const product = req.query.product;
+  const quantity = req.query.quantity;
+  orderService.getOrder(id, product, quantity)
+                .then((result) => {
+                  res.send(result);
+                })
+                .catch((error) => {
+                  res.status(500).send(error.name);
+                });
+});
+
+
+
+app.get("/orders/:id", (req, res) => {
+  const id = req.params["id"];
+  orderService.findOrderById(id)
+                .then((result) => {
+                  res.send(result);
+                })
+                .catch((error) => {
+                  res.status(500).send(error.name);
+                });
+});
+
+app.post("/orders", (req, res) => {
+  const orderToAdd = req.body;
+  orderService.addOrder(orderToAdd)
+               .then((result) => {
+                   res.status(201).send(result);
+               })
+               .catch((error) => {
+                 res.status(500).send(error.name);
+               });
+});
+
+app.delete("/orders/:id", (req, res) => {
+  const id = req.params["id"];
+  orderService.removeOrder(id)
+                .then((result) => {
+                  res.status(204).send(result);
+                })
+                .catch((error) => {
+                  res.status(500).send(error.name);
+                });
+});
+
 app.listen(port, () => {
   console.log(
     `Example app listening at http://localhost:${port}`

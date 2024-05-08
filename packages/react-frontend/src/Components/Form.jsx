@@ -3,9 +3,7 @@ import React, { useState } from "react";
 function Form(props) {
   const [order, setOrder] = useState({
     product: "",
-    quantity: "",
-    product2: "",
-    quantity2: ""
+    quantity: ""
   });
 
   function handleChange(event) {
