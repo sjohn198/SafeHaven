@@ -5,6 +5,8 @@ import fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
 const uri = process.env.MONGODB_URI;
+import jwt from "jsonwebtoken"; 
+
 
 mongoose.set("debug", true);
 
@@ -32,10 +34,10 @@ const uploadProfilePicture = async (file) => {
     }
 }
 
-function getUsers(email, name, profilePicture) {
+function getUsers(username, name, profilePicture) {
   let query = {};
-  if (email) {
-    query.email = email;
+  if (username) {
+    query.username = username;
   }
   if (name) {
     query.name = name;
@@ -44,6 +46,26 @@ function getUsers(email, name, profilePicture) {
     query.profilePicture = profilePicture;
   }
   return UserModel.find(query);
+}
+
+function getPassword(username) { //same as get Users but uses findOne
+  let query = {};
+  query.username = username;
+  return UserModel.findOne(query, {password: 1});
+}
+
+function generateAccessToken(username) { 
+  return new Promise((resolve, reject) => { 
+    jwt.sign( 
+      { username: username }, 
+      process.env.TOKEN_SECRET, 
+      { expiresIn: "1d" }, 
+      (error, token) => { 
+        if (error) reject(error); 
+        else resolve(token); 
+      } 
+    ); 
+  }); 
 }
 
 function changeUserProfilePicture(id, profilePictureId) {
@@ -77,6 +99,8 @@ export default {
   addUser,
   removeUser,
   getUsers,
+  getPassword,
+  generateAccessToken,
   findUserById,
   findProfilePictureById,
   uploadProfilePicture,

@@ -1,93 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Table from "../Components/Table";
-import Form from "../Components/Form";
+import Auth from "../Components/Auth";
 import "../Styles/Navbar.css";
 
 function Inventory() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetchProducts()
-      .then((res) => res.json())
-      .then((json) => setProducts(json))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  function removeOneProduct(index) {
-    let product_id = -1;
-    const updated = products.filter((product, i) => {
-      if (i === index) {
-        product_id = product["_id"];
-      }
-      return i !== index;
-    });
-    deleteProduct(product_id)
-      .then((res) => res.status)
-      .then((status) => {
-        if (status === 204) {
-          setProducts(updated);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function updateList(product) {
-    if (typeof product.quantity === 'number') {
-        product.quantity = product.quantity.toString();
-    }
-    
-    postProduct(product)
-      .then((res) => {
-        if (res.status === 201) {
-          return res.json();
-        } else {
-          return;
-        }
-      })
-      .then((res) => {
-        setProducts([...products, res]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function fetchProducts() {
-    return fetch("http://localhost:8000/products");
-  }
-
-  function postProduct(product) {
-    return fetch("http://localhost:8000/products", {
+  function createUser(user) {
+    console.log(user)
+    return fetch("http://localhost:8000/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(user),
     });
   }
-
-  function deleteProduct(id) {
-    const uri = `http://localhost:8000/products/${id}`;
-    return fetch(uri, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }
-
   return (
     <div className="ProductList">
-    <h1>Sign up:</h1>
-      <Table
-        productData={products}
-        removeProduct={removeOneProduct}
-      />
-      <Form handleSubmit={updateList} />
+    <h1>Signup Page:</h1>
+      <Auth handleSubmit={createUser} />
     </div>
   );
 }
