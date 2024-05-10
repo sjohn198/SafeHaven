@@ -37,7 +37,7 @@ function Form(props) {
         value={order.quantity}
         onChange={handleChange}
       />
-      <input type="button" value="Submit" onClick={submitForm} />
+      <input type="button" value="Add to Order" onClick={submitForm} />
     </form>
     
   )

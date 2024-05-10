@@ -4,7 +4,7 @@ import Inventory from '../Views/Inventory';
 import LoginPage from '../Views/LoginPage';
 import SignUpPage from '../Views/SignUpPage';
 import ManageOrders from '../Views/ManageOrders';
-import ViewOrders from '../Views/AddOrders';
+import AddOrders from '../Views/AddOrders';
 import OrderStatistics from '../Views/OrderStatistics';
 import ProfilePage from '../Views/Profile';
 import '../Styles/Navbar.css';
@@ -27,7 +27,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/manage-orders" element={<ManageOrders />} />
-                <Route path="/view-orders" element={<ViewOrders />} />
+                <Route path="/add-orders" element={<AddOrders />} />
                 <Route path="/statistics" element={<OrderStatistics />} />
                 <Route path="/profile" element={<ProfilePage user_id={user}/>} />
                 <Route path="/" element={<HomePage />} />
@@ -53,7 +53,7 @@ function NavBar() {
                                 <Link to="/manage-orders">Manage Orders</Link>
                             </li>
                             <li className="dropdown-item">
-                                <Link to="/view-orders">&nbsp;&nbsp;&nbsp;Add Orders</Link>
+                                <Link to="/add-orders">&nbsp;&nbsp;&nbsp;Add Orders</Link>
                             </li>
                         </ul>
                     </li>

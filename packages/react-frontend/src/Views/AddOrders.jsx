@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
-import Table from "../Components/Table";
-import Form from "../Components/Form";
+import OrderTable from "../Components/OrderTable";
+import OrderForm from "../Components/OrderForm";
 import "../Styles/Navbar.css";
 
 function AddOrders() {
-  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetchProducts()
+    fetchOrders()
       .then((res) => res.json())
-      .then((json) => setProducts(json))
+      .then((json) => setOrders(json))
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  function removeOneProduct(index) {
-    let product_id = -1;
-    const updated = products.filter((product, i) => {
+  function removeOneOrder(index) {
+    let order_id = -1;
+    const updated = orders.filter((order, i) => {
       if (i === index) {
-        product_id = product["_id"];
+        order_id = order["_id"];
       }
       return i !== index;
     });
-    deleteProduct(product_id)
+    deleteOrder(order_id)
       .then((res) => res.status)
       .then((status) => {
         if (status === 204) {
-          setProducts(updated);
+          setOrders(updated);
         }
       })
       .catch((error) => {
@@ -35,12 +35,11 @@ function AddOrders() {
       });
   }
 
-  function updateList(product) {
-    if (typeof product.quantity === 'number') {
-        product.quantity = product.quantity.toString();
+  function updateOrder(order) {
+    if (typeof order.quantity === 'number') {
+      order.quantity = order.quantity.toString();
     }
-    
-    postProduct(product)
+    postOrder(order)
       .then((res) => {
         if (res.status === 201) {
           return res.json();
@@ -49,29 +48,46 @@ function AddOrders() {
         }
       })
       .then((res) => {
-        setProducts([...products, res]);
+        res = JSON.stringify(res).split(",");
+        const item_count = Number(res[res.length - 3].slice(res[res.length - 3].indexOf("\"item_count\":") + 13));
+        let temp_list = res;
+        for(let i = 1; i < 3*item_count; i++){
+          let combo = temp_list[0] + ", " + temp_list[1];
+          temp_list = temp_list.slice(2)
+          temp_list.unshift(combo);
+        }
+        res = temp_list;
+        let temp = res[0].slice(1);
+        let temp2 = res[1];
+        res[0] = "{" + res[2];
+        res[1] = temp;
+        res[2] = temp2;
+        res = res.slice(1).reduce((accumulator, cur_val) => accumulator + ", " + cur_val, res[0]);
+        res = JSON.parse(res);
+        setOrders([...orders, res]);
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  function fetchProducts() {
-    return fetch("http://localhost:8000/products");
+  function fetchOrders() {
+    return fetch("http://localhost:8000/orders");
   }
 
-  function postProduct(product) {
-    return fetch("http://localhost:8000/products", {
+  function postOrder(order) {
+    order = "{\n \"items\": " + JSON.stringify(order) + ",\n" + " \"item_count\": \"" + order.length + "\"\n}";
+    return fetch("http://localhost:8000/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: order,
     });
   }
 
-  function deleteProduct(id) {
-    const uri = `http://localhost:8000/products/${id}`;
+  function deleteOrder(id) {
+    const uri = `http://localhost:8000/orders/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: {
@@ -83,11 +99,11 @@ function AddOrders() {
   return (
     <div className="ProductList">
     <h1>Add orders:</h1>
-      <Table
-        productData={products}
-        removeProduct={removeOneProduct}
+      <OrderTable
+        orderData={orders}
+        removeOrder={removeOneOrder}
       />
-      <Form handleSubmit={updateList} />
+      <OrderForm handleSubmit={updateOrder} />
     </div>
   );
 }
