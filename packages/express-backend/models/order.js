@@ -1,25 +1,25 @@
 import mongoose from "mongoose";
 
-const OrderSchema = new mongoose.Schema(
-  {
-    product: {
-      type: String, // [String]
-      required: true,
-      trim: true,
+const OrderSchema = new mongoose.Schema({
+    items: [{
+      product: {
+        type: String,
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true
+      }
+    }],
+    item_count: {
+        type: Number,
+        required: true
     },
-    quantity: {
-      type: String, // [Number]
-      required: true,
-      trim: true,
-      /* validate(value) {
-        if (value.length < 2)
-          throw new Error("Invalid quantity, must be at least 2 numbers.");
-      }, */
-    },
-  },
-  { collection: "orders" } // Specify collection name
-);
+    total_profit: {
+        type: Number,
+        required: false
+    }
+  });
 
 const Order = mongoose.model("Order", OrderSchema);
-
 export default Order;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Table from "../Components/Table";
-import Form from "../Components/Form";
+import OrderTable from "../Components/OrderTable";
+import OrderForm from "../Components/OrderForm";
 import "../Styles/Navbar.css";
 
-function ViewOrders() {
+function AddOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -35,8 +35,11 @@ function ViewOrders() {
       });
   }
 
-  function updateList(person) {
-    postOrder(person)
+  function updateOrder(order) {
+    if (typeof order.quantity === 'number') {
+      order.quantity = order.quantity.toString();
+    }
+    postOrder(order)
       .then((res) => {
         if (res.status === 201) {
           return res.json();
@@ -45,6 +48,22 @@ function ViewOrders() {
         }
       })
       .then((res) => {
+        res = JSON.stringify(res).split(",");
+        const item_count = Number(res[res.length - 3].slice(res[res.length - 3].indexOf("\"item_count\":") + 13));
+        let temp_list = res;
+        for(let i = 1; i < 3*item_count; i++){
+          let combo = temp_list[0] + ", " + temp_list[1];
+          temp_list = temp_list.slice(2)
+          temp_list.unshift(combo);
+        }
+        res = temp_list;
+        let temp = res[0].slice(1);
+        let temp2 = res[1];
+        res[0] = "{" + res[2];
+        res[1] = temp;
+        res[2] = temp2;
+        res = res.slice(1).reduce((accumulator, cur_val) => accumulator + ", " + cur_val, res[0]);
+        res = JSON.parse(res);
         setOrders([...orders, res]);
       })
       .catch((error) => {
@@ -56,13 +75,14 @@ function ViewOrders() {
     return fetch("http://localhost:8000/orders");
   }
 
-  function postOrder(person) {
+  function postOrder(order) {
+    order = "{\n \"items\": " + JSON.stringify(order) + ",\n" + " \"item_count\": \"" + order.length + "\"\n}";
     return fetch("http://localhost:8000/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(person),
+      body: order,
     });
   }
 
@@ -77,16 +97,15 @@ function ViewOrders() {
   }
 
   return (
-    <div className="orderList">
-      <h1>View Orders:</h1>
-      <Table
+    <div className="ProductList">
+    <h1>Add orders:</h1>
+      <OrderTable
         orderData={orders}
         removeOrder={removeOneOrder}
       />
-      <Form handleSubmit={updateList} />
-      
+      <OrderForm handleSubmit={updateOrder} />
     </div>
   );
 }
 
-export default ViewOrders;
+export default AddOrders;
