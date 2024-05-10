@@ -49,6 +49,7 @@ function Inventory() {
         }
       })
       .then((res) => {
+        console.log(res)
         const productIndex = products.findIndex(
           (product) => product.product === res.product
         )
