@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema(
       trim: true,
     },
     quantity: {
-      type: String, // [Number]
+      type: Number,
       required: true,
       trim: true,
     },

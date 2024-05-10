@@ -118,9 +118,11 @@ app.post("/products", (req, res) => {
   const productToAdd = req.body;
   productService.addProduct(productToAdd)
                .then((result) => {
+                   
                    res.status(201).send(result);
                })
                .catch((error) => {
+                console.log(error);
                  res.status(500).send(error.name);
                });
 });

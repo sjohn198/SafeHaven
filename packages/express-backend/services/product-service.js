@@ -32,7 +32,8 @@ function removeProduct(id) {
 }
 
 function addProduct(product) {
-  console.log(product)
+  console.log(product);
+  console.log("hi");
   return ProductModel.findOneAndUpdate(
     { product: product.product },
     { $inc: { quantity: product.quantity } },

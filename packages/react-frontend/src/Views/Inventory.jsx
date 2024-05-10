@@ -42,6 +42,7 @@ function Inventory() {
 
     postProduct(product)
       .then((res) => {
+        console.log(res.body);
         if (res.status === 201) {
           return res.json()
         } else {
