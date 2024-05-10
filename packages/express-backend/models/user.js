@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import ProfilePicture from "./profile-picture.js";
 
 const UserSchema = new mongoose.Schema(
   {

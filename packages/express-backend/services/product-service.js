@@ -3,7 +3,6 @@ import ProductModel from '../models/product.js'
 import dotenv from 'dotenv'
 dotenv.config()
 const uri = process.env.MONGODB_URI
-const local_uri = 'mongodb://127.0.0.1:27017/Products'
 
 mongoose.set('debug', true)
 
