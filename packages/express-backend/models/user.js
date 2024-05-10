@@ -3,29 +3,34 @@ import ProfilePicture from "./profile-picture.js";
 
 const UserSchema = new mongoose.Schema(
   {
-    email: {
+    username: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    password: {
         type: String,
         required: true,
         trim: true,
     },
     name: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     location: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     bio: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     skills: {
       type: [String],
-      required: true,
+      required: false,
       trim: true,
     },
     profilePicture: {

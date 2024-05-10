@@ -24,7 +24,7 @@ app.post("/profile-picture", upload.single("profilePicture"), async (req, res) =
 
   try {
     const result = await userService.uploadProfilePicture(file);
-    const user = await userService.getUsers(req.body.email, undefined, undefined);
+    const user = await userService.getUsers(req.body.username, undefined, undefined);
     
     const pfp = { profilePicture : result._id }
 
@@ -82,7 +82,7 @@ app.post("/users", (req, res) => {
                    res.status(201).send(result);
                })
                .catch((error) => {
-                 res.status(500).send(error.name);
+                 res.status(500).send(error);
                });
 });
 
@@ -102,6 +102,29 @@ app.get("/users/:id", (req, res) => {
                });
 });
 
+app.post("/login", (req, res) => {
+  console.log(req.body)
+  const username = req.body.username;
+  const password = req.body.password;
+  userService.getPassword(username)
+    .then((result) => {
+      if (result !== null && result.password === password) {
+        userService.generateAccessToken(username)
+        .then((token) => {
+          res.status(200).send(token);
+        })
+        .catch((error) => {
+          res.status(500).send(error);
+        });
+      }
+      else {
+        res.status(401).send("Invalid Username or Password");
+      }
+      })
+    .catch((error) => {
+      res.status(500).send(error);
+      });
+});
 
 app.delete("/products/:id", (req, res) => {
   const id = req.params["id"];
