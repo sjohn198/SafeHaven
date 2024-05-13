@@ -27,6 +27,7 @@ function App() {
                 <Route path="/profile" element={<ProfilePage user_id={user}/>} />
                 <Route path="/" element={<HomePage />} />
             </Routes>
+            <Footer />
         </Router>
     );
 }
@@ -63,6 +64,22 @@ function NavBar() {
                 </div>
             </nav>
         </div>
+    );
+}
+
+function Footer() {
+    return (
+        <footer className="footer">
+            <div className="footer-content">
+                <div className="footer-left">
+                    <Link to="/about-us">About Us</Link>
+                    <Link to="/terms-and-conditions">Terms and Conditions</Link>
+                </div>
+                <div className="footer-right">
+                    <p>&copy; CSC 307 Spring 2024</p>
+                </div>
+            </div>
+        </footer>
     );
 }
 

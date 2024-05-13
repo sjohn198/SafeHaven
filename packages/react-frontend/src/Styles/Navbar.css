@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #3498db;
+    background-color: rgb(81, 59, 213, 0.71);
     overflow: hidden;
     position: relative;
     z-index: 500;
@@ -95,11 +95,47 @@
     font-size: 5rem;
 }
 
-.orderList {
-    padding: 0 1rem;
+.ProductList {
+    padding: 0 5rem;
 }
 
 .left {
     float: right;
     padding: 0 1rem;
 }
+
+.footer {
+    background-color: rgb(81, 59, 213, 0.71);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left {
+    display: flex;
+}
+
+.footer-left a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.footer-right {
+    margin-left: auto;
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+}
+

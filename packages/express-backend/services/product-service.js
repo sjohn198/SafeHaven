@@ -6,7 +6,9 @@ const uri = process.env.MONGODB_URI
 
 mongoose.set('debug', true)
 
-mongoose.connect(uri).catch((error) => console.log(error))
+mongoose
+  .connect(uri)
+  .catch((error) => console.log(error));
 
 function getProducts(product, quantity) {
   let promise
