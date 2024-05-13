@@ -15,17 +15,17 @@ function App() {
         id: "663340b898b86ea44965feb0"
     };
     return (
-        <Router>
+        <Router id="router">
             <NavBar />
             <Routes>
-                <Route path="/inventory" element={<Inventory />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignUpPage />} />
-                <Route path="/manage-orders" element={<ManageOrders />} />
-                <Route path="/add-orders" element={<AddOrders />} />
-                <Route path="/statistics" element={<OrderStatistics />} />
-                <Route path="/profile" element={<ProfilePage user_id={user}/>} />
-                <Route path="/" element={<HomePage />} />
+                    <Route path="/inventory" element={<Inventory />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignUpPage />} />
+                    <Route path="/manage-orders" element={<ManageOrders />} />
+                    <Route path="/add-orders" element={<AddOrders />} />
+                    <Route path="/statistics" element={<OrderStatistics />} />
+                    <Route path="/profile" element={<ProfilePage user_id={user}/>} />
+                    <Route path="/" element={<HomePage />} />
             </Routes>
             <Footer />
         </Router>
