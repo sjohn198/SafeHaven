@@ -74,6 +74,7 @@ function Inventory() {
   }
 
   function postProduct(product) {
+    console.log("posting:", product)
     return fetch('http://localhost:8000/products', {
       method: 'POST',
       headers: {
