@@ -39,8 +39,13 @@ function convertToDict(order_str){
 function TableBody(props) {
   const rows = props.orderData.map((order, index) => {
     let arr_order = Array(order);
+    let count = 0;
     if (order != undefined){
         let each_item = arr_order.map(item => {
+            console.log(item);
+            let item_arr = JSON.stringify(item).split(",");
+            let item_id = item_arr[0].slice(item_arr[0].indexOf("\"_id\":")+7, item_arr[0].length - 1);;
+            console.log(item_id);
             item = convertToDict(JSON.stringify(item));
             const item_count = item[0]["item_count"];
             let each_product = item.slice(1).map((product, index) => {
@@ -50,7 +55,7 @@ function TableBody(props) {
                     <td>{product["product"]}</td>
                     <td>{product["quantity"]}</td>
                     <td>
-                        <button onClick={() => props.removeProduct(index)}>
+                        <button onClick={() => props.removeProduct(item_id)}>
                             Delete
                         </button>
                         </td>

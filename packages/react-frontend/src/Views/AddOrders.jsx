@@ -15,13 +15,10 @@ function AddOrders() {
       });
   }, []);
 
-  function removeOneOrder(index) {
-    let order_id = -1;
-    const updated = orders.filter((order, i) => {
-      if (i === index) {
-        order_id = order["_id"];
-      }
-      return i !== index;
+  function removeOneOrder(order_id) {
+    console.log(orders[0]["_id"]);
+    const updated = orders.filter((order) => {
+      return order["_id"] !== order_id;
     });
     deleteOrder(order_id)
       .then((res) => res.status)
