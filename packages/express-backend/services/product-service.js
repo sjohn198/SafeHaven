@@ -37,7 +37,7 @@ function addProduct(product) {
   console.log("hi");
   return ProductModel.findOneAndUpdate(
     { product: product.product },
-    { $inc: { quantity: product.quantity } },
+    { $inc: { quantity: product.quantity, price: product.price } },
     { upsert: true, new: true }
   )
 }

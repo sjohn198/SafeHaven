@@ -7,6 +7,7 @@ function TableHeader() {
           <th>ID</th>
           <th>Product</th>
           <th>Quantity</th>
+          <th>Price</th>
           <th>Remove</th>
         </tr>
       </thead>
@@ -21,6 +22,7 @@ function TableBody(props) {
           <td>{row._id.toString()}</td>
           <td>{row.product}</td>
           <td>{row.quantity}</td>
+          <td>{row.price}</td>
           <td>
               <button onClick={() => props.removeProduct(index)}>
                 Delete

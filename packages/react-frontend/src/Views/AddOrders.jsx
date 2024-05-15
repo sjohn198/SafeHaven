@@ -36,6 +36,7 @@ function AddOrders() {
   }
 
   function updateOrder(order) {
+    console.log("order in updateOder:", order)
     if (typeof order.quantity === 'number') {
       order.quantity = order.quantity.toString();
     }
