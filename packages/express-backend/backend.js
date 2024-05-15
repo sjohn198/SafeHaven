@@ -76,14 +76,7 @@ app.get("/profile-picture/:id", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  const userToAdd = req.body;
-  userService.addUser(userToAdd)
-               .then((result) => {
-                   res.status(201).send(result);
-               })
-               .catch((error) => {
-                 res.status(500).send(error);
-               });
+  userService.signupUser(req, res);
 });
 
 app.get("/users/:id", (req, res) => {
@@ -103,27 +96,7 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  console.log(req.body)
-  const username = req.body.username;
-  const password = req.body.password;
-  userService.getPassword(username)
-    .then((result) => {
-      if (result !== null && result.password === password) {
-        userService.generateAccessToken(username)
-        .then((token) => {
-          res.status(200).send(token);
-        })
-        .catch((error) => {
-          res.status(500).send(error);
-        });
-      }
-      else {
-        res.status(401).send("Invalid Username or Password");
-      }
-      })
-    .catch((error) => {
-      res.status(500).send(error);
-      });
+  userService.loginUser(req, res);
 });
 
 app.delete("/products/:id", (req, res) => {
