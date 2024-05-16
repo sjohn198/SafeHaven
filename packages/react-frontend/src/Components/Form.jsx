@@ -11,12 +11,17 @@ function Form(props) {
     if (name === "quantity") {
       setOrder({ product: order["product"], quantity: value });
     }      
-    else setOrder({ product: value, quantity: order["quantity"] });
+    if (name === "product") {
+       setOrder({ product: value, quantity: order["quantity"], price: order["price"] });
+    }
+    if (name === "price") {
+      setOrder({ product: order["product"], quantity: order["quantity"], price: value });
+    }
   }
 
   function submitForm() {
     props.handleSubmit(order);
-    setOrder({ product: "", quantity: "" });
+    setOrder({ product: "", quantity: "", price: ""});
   }
 
   return (
@@ -35,6 +40,14 @@ function Form(props) {
         name="quantity"
         id="quantity"
         value={order.quantity}
+        onChange={handleChange}
+      />
+      <label htmlFor="price">price</label>
+      <input
+        type="text"
+        name="price"
+        id="price"
+        value={order.price}
         onChange={handleChange}
       />
       <input type="button" value="Add to Order" onClick={submitForm} />

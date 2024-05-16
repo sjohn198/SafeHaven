@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/Profile.css';
+import {addAuthHeader} from '../Components/helpers'
+
 
 function Profile({ user_id }) {
   const [profilePicture, setProfilePicture] = useState('');
@@ -9,7 +11,9 @@ function Profile({ user_id }) {
 
   useEffect(() => {
     async function getUser() {
-        const user_details = await axios.get(`http://localhost:8000/users/${user_id.id}`);
+        const user_details = await axios.get(`http://localhost:8000/users/${user_id.id}`, {
+          headers: addAuthHeader()
+        });
         const user = user_details.data;
         setUser(user);
 
@@ -49,9 +53,9 @@ function Profile({ user_id }) {
       try {
         // Send the file to the server for processing and storage in MongoDB
         const response = await axios.post('http://localhost:8000/profile-picture', formData, {
-          headers: {
+          headers: addAuthHeader({
             'Content-Type': 'multipart/form-data'
-          }
+          })
         });
         
         console.log(response);
@@ -69,37 +73,40 @@ function Profile({ user_id }) {
 
 
   return (
-    <div className="profile-container">
-      <div className="profile-header">
-        <label htmlFor="profile-picture-upload" className="profile-picture-label">
-          <img className="profile-avatar" src={profilePicture} alt={user.name}/>
-          <input
-            id="profile-picture-upload"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-          />
-          <span className="upload-icon">Upload</span>
-        </label>
-        <div className="profile-info">
-          <h2 className="profile-name">{user.name}</h2>
-          <p className="profile-location">{user.location}</p>
-          <p className="profile-email">{user.email}</p>
+    <div>
+      <div className="profile-container">
+        <div className="profile-header">
+          <label htmlFor="profile-picture-upload" className="profile-picture-label">
+            <img className="profile-avatar" src={profilePicture} alt={user.name}/>
+            <input
+              id="profile-picture-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            <span className="upload-icon">Upload</span>
+          </label>
+          <div className="profile-info">
+            <h2 className="profile-name">{user.name}</h2>
+            <p className="profile-location">{user.location}</p>
+            <p className="profile-email">{user.email}</p>
+          </div>
+        </div>
+        <div className="profile-bio">
+          <h3>Bio</h3>
+          <p>{user.bio}</p>
+        </div>
+        <div className="profile-skills">
+          <h3>Skills</h3>
+          <ul>
+            {user.skills.map((skill, index) => (
+              <li key={index}>{skill}</li>
+            ))}
+          </ul>
         </div>
       </div>
-      <div className="profile-bio">
-        <h3>Bio</h3>
-        <p>{user.bio}</p>
-      </div>
-      <div className="profile-skills">
-        <h3>Skills</h3>
-        <ul>
-          {user.skills.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
-        </ul>
-      </div>
+      <div className="bottom-margin"></div>
     </div>
   );
 }

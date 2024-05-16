@@ -7,6 +7,7 @@ function TableHeader() {
           <th>ID</th>
           <th>Product</th>
           <th>Quantity</th>
+          <th>Price</th>
           <th>Remove</th>
         </tr>
       </thead>
@@ -14,6 +15,10 @@ function TableHeader() {
 }
   
 function TableBody(props) {
+   if (props.productData === null) {
+    return <caption>Data Unavailable</caption>;
+  }
+  else {
   const rows = props.productData.map((row, index) => {
     if (row != undefined) {
       return (
@@ -21,6 +26,7 @@ function TableBody(props) {
           <td>{row._id.toString()}</td>
           <td>{row.product}</td>
           <td>{row.quantity}</td>
+          <td>{row.price}</td>
           <td>
               <button onClick={() => props.removeProduct(index)}>
                 Delete
@@ -34,7 +40,7 @@ function TableBody(props) {
     <tbody>
       {rows}
     </tbody>
-  );
+  ); }
 }
 
 

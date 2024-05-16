@@ -6,7 +6,9 @@ const uri = process.env.MONGODB_URI
 
 mongoose.set('debug', true)
 
-mongoose.connect(uri).catch((error) => console.log(error))
+mongoose
+  .connect(uri)
+  .catch((error) => console.log(error));
 
 function getProducts(product, quantity) {
   let promise
@@ -35,7 +37,7 @@ function addProduct(product) {
   console.log("hi");
   return ProductModel.findOneAndUpdate(
     { product: product.product },
-    { $inc: { quantity: product.quantity } },
+    { $inc: { quantity: product.quantity, price: product.price } },
     { upsert: true, new: true }
   )
 }
