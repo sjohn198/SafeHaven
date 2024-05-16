@@ -2,14 +2,25 @@ import React, { useState, useEffect } from "react";
 import OrderTable from "../Components/OrderTable";
 import OrderForm from "../Components/OrderForm";
 import "../Styles/Navbar.css";
+import {addAuthHeader} from '../Components/helpers'
 
 function AddOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     fetchOrders()
-      .then((res) => res.json())
-      .then((json) => setOrders(json))
+      .then((res) => 
+        res.status === 200 ? res.json() : undefined
+      )
+      .then((json) => 
+        {
+          if (json) { 
+            setOrders(json);
+          }
+          else {
+            setOrders(null);
+          }
+          })
       .catch((error) => {
         console.log(error);
       });
@@ -73,16 +84,18 @@ function AddOrders() {
   }
 
   function fetchOrders() {
-    return fetch("http://localhost:8000/orders");
+    return fetch("http://localhost:8000/orders", {
+      headers: addAuthHeader()
+    });
   }
 
   function postOrder(order) {
     order = "{\n \"items\": " + JSON.stringify(order) + ",\n" + " \"item_count\": \"" + order.length + "\"\n}";
     return fetch("http://localhost:8000/orders", {
       method: "POST",
-      headers: {
+      headers: addAuthHeader({
         "Content-Type": "application/json",
-      },
+      }),
       body: order,
     });
   }
@@ -91,9 +104,9 @@ function AddOrders() {
     const uri = `http://localhost:8000/orders/${id}`;
     return fetch(uri, {
       method: "DELETE",
-      headers: {
+      headers: addAuthHeader({
         "Content-Type": "application/json",
-      },
+      }),
     });
   }
 
