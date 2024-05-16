@@ -14,6 +14,10 @@ function TableHeader() {
 }
   
 function TableBody(props) {
+   if (props.productData === null) {
+    return <caption>Data Unavailable</caption>;
+  }
+  else {
   const rows = props.productData.map((row, index) => {
     if (row != undefined) {
       return (
@@ -34,7 +38,7 @@ function TableBody(props) {
     <tbody>
       {rows}
     </tbody>
-  );
+  ); }
 }
 
 

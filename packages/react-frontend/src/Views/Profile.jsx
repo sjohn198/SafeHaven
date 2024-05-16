@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/Profile.css';
+import {addAuthHeader} from '../Components/helpers'
+
 
 function Profile({ user_id }) {
   const [profilePicture, setProfilePicture] = useState('');
@@ -9,7 +11,9 @@ function Profile({ user_id }) {
 
   useEffect(() => {
     async function getUser() {
-        const user_details = await axios.get(`http://localhost:8000/users/${user_id.id}`);
+        const user_details = await axios.get(`http://localhost:8000/users/${user_id.id}`, {
+          headers: addAuthHeader()
+        });
         const user = user_details.data;
         setUser(user);
 
@@ -49,9 +53,9 @@ function Profile({ user_id }) {
       try {
         // Send the file to the server for processing and storage in MongoDB
         const response = await axios.post('http://localhost:8000/profile-picture', formData, {
-          headers: {
+          headers: addAuthHeader({
             'Content-Type': 'multipart/form-data'
-          }
+          })
         });
         
         console.log(response);

@@ -119,7 +119,7 @@ function signupUser(req, res)
           .then((hashedPassword) => {
             generateAccessToken(username).then((token) => {
             console.log("Token:", token);
-            res.status(201).send({ token: token });
+            res.status(201).send(token);
             addUser({username: username, password: hashedPassword});
           });
           });
@@ -185,6 +185,7 @@ export default {
   getUsers,
   loginUser,
   signupUser,
+  authenticateUser,
   findUserById,
   findProfilePictureById,
   uploadProfilePicture,
