@@ -2,25 +2,21 @@ import React, { useState, useEffect } from "react";
 import OrderTable from "../Components/OrderTable";
 import OrderForm from "../Components/OrderForm";
 import "../Styles/Navbar.css";
-import {addAuthHeader} from '../Components/helpers'
+import { addAuthHeader } from "../Components/helpers";
 
 function AddOrders() {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     fetchOrders()
-      .then((res) => 
-        res.status === 200 ? res.json() : undefined
-      )
-      .then((json) => 
-        {
-          if (json) { 
-            setOrders(json);
-          }
-          else {
-            setOrders(null);
-          }
-          })
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+        if (json) {
+          setOrders(json);
+        } else {
+          setOrders(null);
+        }
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -44,8 +40,8 @@ function AddOrders() {
   }
 
   function updateOrder(order) {
-    console.log("order in updateOder:", order)
-    if (typeof order.quantity === 'number') {
+    console.log("order in updateOder:", order);
+    if (typeof order.quantity === "number") {
       order.quantity = order.quantity.toString();
     }
     postOrder(order)
@@ -58,11 +54,13 @@ function AddOrders() {
       })
       .then((res) => {
         res = JSON.stringify(res).split(",");
-        const item_count = Number(res[res.length - 3].slice(res[res.length - 3].indexOf("\"item_count\":") + 13));
+        const item_count = Number(
+          res[res.length - 3].slice(res[res.length - 3].indexOf('"item_count":') + 13)
+        );
         let temp_list = res;
-        for(let i = 1; i < 3*item_count; i++){
+        for (let i = 1; i < 3 * item_count; i++) {
           let combo = temp_list[0] + ", " + temp_list[1];
-          temp_list = temp_list.slice(2)
+          temp_list = temp_list.slice(2);
           temp_list.unshift(combo);
         }
         res = temp_list;
@@ -87,13 +85,14 @@ function AddOrders() {
   }
 
   function postOrder(order) {
-    order = "{\n \"items\": " + JSON.stringify(order) + ",\n" + " \"item_count\": \"" + order.length + "\"\n}";
+    order =
+      '{\n "items": ' + JSON.stringify(order) + ",\n" + ' "item_count": "' + order.length + '"\n}';
     return fetch("http://localhost:8000/orders", {
       method: "POST",
       headers: addAuthHeader({
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       }),
-      body: order,
+      body: order
     });
   }
 
@@ -102,18 +101,15 @@ function AddOrders() {
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
-        "Content-Type": "application/json",
-      }),
+        "Content-Type": "application/json"
+      })
     });
   }
 
   return (
     <div className="ProductList">
-    <h1>Add orders:</h1>
-      <OrderTable
-        orderData={orders}
-        removeOrder={removeOneOrder}
-      />
+      <h1>Add orders:</h1>
+      <OrderTable orderData={orders} removeOrder={removeOneOrder} />
       <OrderForm handleSubmit={updateOrder} />
     </div>
   );

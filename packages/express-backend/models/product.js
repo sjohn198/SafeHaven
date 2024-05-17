@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema(
   {
@@ -6,22 +6,22 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       unique: true,
       required: true,
-      trim: true,
+      trim: true
     },
     quantity: {
       type: Number,
       required: true,
-      trim: true,
+      trim: true
     },
     price: {
       type: Number,
       required: true,
-      trim: true,
+      trim: true
     }
   },
-  { collection: 'products' } // Specify collection name
-)
+  { collection: "products" } // Specify collection name
+);
 
-const Product = mongoose.model('Product', ProductSchema)
+const Product = mongoose.model("Product", ProductSchema);
 
-export default Product
+export default Product;

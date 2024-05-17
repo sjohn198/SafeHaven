@@ -6,9 +6,7 @@ const uri = process.env.MONGODB_URI;
 
 mongoose.set("debug", true);
 
-mongoose
-  .connect(uri)
-  .catch((error) => console.log(error));
+mongoose.connect(uri).catch((error) => console.log(error));
 
 function getOrder(id, product, quantity) {
   let promise;
@@ -37,7 +35,7 @@ function addOrder(order) {
 }
 
 function findOrderByProductAndQuantity(product, quantity) {
-    return OrderModel.find({ product: product, quantity: quantity });
+  return OrderModel.find({ product: product, quantity: quantity });
 }
 
 export default {
