@@ -37,6 +37,9 @@ function convertToDict(order_str){
 }
   
 function TableBody(props) {
+  if (props.orderData === null) {
+    return <caption>Data Unavailable</caption>;
+  }
   const rows = props.orderData.map((order, index) => {
     let arr_order = Array(order);
     let count = 0;

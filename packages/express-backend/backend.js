@@ -15,7 +15,7 @@ app.use(express.json());
 const upload = multer({ dest: "uploads/" });
 app.use('/uploads', express.static('uploads'))
 
-app.post("/profile-picture", upload.single("profilePicture"), async (req, res) => {
+app.post("/profile-picture", upload.single("profilePicture"), userService.authenticateUser, async (req, res) => {
   const file = req.file;
   if (!file) {
     res.status(400).send("No file uploaded");
@@ -41,7 +41,7 @@ app.post("/profile-picture", upload.single("profilePicture"), async (req, res) =
   }
 });
 
-app.patch("/users/:id", (req, res) => {
+app.patch("/users/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   userService.changeUserProfilePicture(id, req.body.profilePicture)
                .then((result) => {
@@ -79,7 +79,7 @@ app.post("/users", (req, res) => {
   userService.signupUser(req, res);
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   userService.findUserById(id)
                .then((result) => {
@@ -99,7 +99,7 @@ app.post("/login", (req, res) => {
   userService.loginUser(req, res);
 });
 
-app.delete("/products/:id", (req, res) => {
+app.delete("/products/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   productService.removeProduct(id)
                 .then((result) => {
@@ -110,7 +110,7 @@ app.delete("/products/:id", (req, res) => {
                 });
 });
 
-app.post("/products", (req, res) => {
+app.post("/products", userService.authenticateUser, (req, res) => {
   const productToAdd = req.body;
   productService.addProduct(productToAdd)
                .then((result) => {
@@ -123,7 +123,7 @@ app.post("/products", (req, res) => {
                });
 });
 
-app.get("/products/:id", (req, res) => {
+app.get("/products/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   productService.findProductById(id)
                .then((result) => {
@@ -139,7 +139,7 @@ app.get("/products/:id", (req, res) => {
                });
 });
 
-app.get("/products", (req, res) => {
+app.get("/products", userService.authenticateUser, (req, res) => {
   const product = req.query.product;
   const quantity = req.query.quantity;
   productService.getProducts(product, quantity)
@@ -156,7 +156,7 @@ app.get("/", (req, res) => {
 });
 
 //add_orders routes
-app.get("/orders", (req, res) => {
+app.get("/orders", userService.authenticateUser, (req, res) => {
   const id = req.query.id;
   const product = req.query.product;
   const quantity = req.query.quantity;
@@ -171,7 +171,7 @@ app.get("/orders", (req, res) => {
 
 
 
-app.get("/orders/:id", (req, res) => {
+app.get("/orders/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   orderService.findOrderById(id)
                 .then((result) => {
@@ -182,7 +182,7 @@ app.get("/orders/:id", (req, res) => {
                 });
 });
 
-app.post("/orders", (req, res) => {
+app.post("/orders", userService.authenticateUser, (req, res) => {
   const orderToAdd = req.body;
   orderService.addOrder(orderToAdd)
                .then((result) => {
@@ -193,7 +193,7 @@ app.post("/orders", (req, res) => {
                });
 });
 
-app.delete("/orders/:id", (req, res) => {
+app.delete("/orders/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   orderService.removeOrder(id)
                 .then((result) => {

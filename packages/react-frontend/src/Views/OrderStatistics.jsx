@@ -2,14 +2,23 @@ import React, { useState, useEffect } from "react";
 import Table from "../Components/Table";
 import Form from "../Components/Form";
 import "../Styles/Navbar.css";
+import {addAuthHeader} from '../Components/helpers'
 
 function Inventory() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetchProducts()
-      .then((res) => res.json())
-      .then((json) => setProducts(json))
+      .then((res) => res.status === 200 ? res.json() : undefined
+    )
+      .then((json) => {
+        if (json) { 
+          setProducts(json);
+        }
+        else {
+          setProducts(null);
+        }
+        })
       .catch((error) => {
         console.log(error);
       });
@@ -57,15 +66,17 @@ function Inventory() {
   }
 
   function fetchProducts() {
-    return fetch("http://localhost:8000/products");
+    return fetch("http://localhost:8000/products", {
+      headers: addAuthHeader()
+    });
   }
 
   function postProduct(product) {
     return fetch("http://localhost:8000/products", {
       method: "POST",
-      headers: {
+      headers: addAuthHeader({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify(product),
     });
   }
@@ -74,9 +85,9 @@ function Inventory() {
     const uri = `http://localhost:8000/products/${id}`;
     return fetch(uri, {
       method: "DELETE",
-      headers: {
+      headers: addAuthHeader({
         "Content-Type": "application/json",
-      },
+      }),
     });
   }
 
