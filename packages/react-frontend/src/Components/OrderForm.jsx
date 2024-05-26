@@ -1,42 +1,34 @@
 import React, { useState } from "react";
+import Popup from "reactjs-popup";
+import 'reactjs-popup/dist/index.css';
 
 function OrderForm(props) {
-  const [order, setOrder] = useState([]);
-  const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [order, setOrder] = useState({
+    product: "",
+    quantity: ""
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    if (name === "product") {
-      setProduct(value);
-    } else if (name === "quantity") {
-      setQuantity(value);
+    if (name === "quantity"){
+      setOrder({ product : order["product"], quantity : value});
     }
+    else setOrder({ product: value, quantity: order["quantity"]});
   };
 
   const addToList = () => {
-    const newItem = { product, quantity };
-    setOrder((prevOrder) => {
-      const updatedOrder = [...order, newItem];
-      return updatedOrder;
-    });
-    setProduct("");
-    setQuantity("");
-  };
-
-  function submitForm() {
+    //console.log(order);
     props.handleSubmit(order);
-    setOrder([]);
-  }
+    setOrder({ product : "", quantity : "" });
+  };
 
   return (
     <form>
       <label htmlFor="product">product</label>
-      <input type="text" name="product" id="product" value={product} onChange={handleChange} />
+      <input type="text" name="product" id="product" value={order["product"]} onChange={handleChange} />
       <label htmlFor="quantity">quantity</label>
-      <input type="text" name="quantity" id="quantity" value={quantity} onChange={handleChange} />
+      <input type="text" name="quantity" id="quantity" value={order["quantity"]} onChange={handleChange} />
       <input type="button" value="Add to Order" onClick={addToList} />
-      <input type="button" value="Submit Order" onClick={submitForm} />
     </form>
   );
 }

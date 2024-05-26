@@ -1,86 +1,53 @@
 import React, { useState, useEffect } from "react";
-import Table from "../Components/Table";
-import Form from "../Components/Form";
+import OrderTable from "../Components/OrderTable";
 import "../Styles/Navbar.css";
 import { addAuthHeader } from "../Components/helpers";
 
-function Inventory() {
-  const [products, setProducts] = useState([]);
+function ManageOrders() {
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    fetchProducts()
+    fetchOrders()
       .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
+
         if (json) {
-          setProducts(json);
+          setOrders(json);
         } else {
-          setProducts(null);
+          setOrders(null);
         }
+        //console.log(orders);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  function removeOneProduct(index) {
-    let product_id = -1;
-    const updated = products.filter((product, i) => {
-      if (i === index) {
-        product_id = product["_id"];
-      }
-      return i !== index;
+  function removeOneOrder(order_id) {
+    //console.log(orders[0]["_id"]);
+    const updated = orders.filter((order) => {
+      return order["_id"] !== order_id;
     });
-    deleteProduct(product_id)
+    deleteOrder(order_id)
       .then((res) => res.status)
       .then((status) => {
         if (status === 204) {
-          setProducts(updated);
+          setOrders(updated);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+    };
 
-  function updateList(product) {
-    if (typeof product.quantity === "number") {
-      product.quantity = product.quantity.toString();
-    }
-
-    postProduct(product)
-      .then((res) => {
-        if (res.status === 201) {
-          return res.json();
-        } else {
-          return;
-        }
-      })
-      .then((res) => {
-        setProducts([...products, res]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function fetchProducts() {
-    return fetch("http://localhost:8000/products", {
+  function fetchOrders() {
+    return fetch("http://localhost:8000/orders", {
       headers: addAuthHeader()
     });
   }
 
-  function postProduct(product) {
-    return fetch("http://localhost:8000/products", {
-      method: "POST",
-      headers: addAuthHeader({
-        "Content-Type": "application/json"
-      }),
-      body: JSON.stringify(product)
-    });
-  }
-
-  function deleteProduct(id) {
-    const uri = `http://localhost:8000/products/${id}`;
+  function deleteOrder(id) {
+    const uri = `http://localhost:8000/orders/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
@@ -90,12 +57,11 @@ function Inventory() {
   }
 
   return (
-    <div className="ProductList">
+    <div className="OrderList">
       <h1>Manage orders:</h1>
-      <Table productData={products} removeProduct={removeOneProduct} />
-      <Form handleSubmit={updateList} />
+      <OrderTable orderData={orders} removeOrder={removeOneOrder} />
     </div>
   );
 }
 
-export default Inventory;
+export default ManageOrders;

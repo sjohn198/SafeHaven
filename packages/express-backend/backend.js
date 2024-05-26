@@ -1,5 +1,6 @@
 import cors from "cors";
 import orderService from "./services/order-service.js";
+import orderUnitService from "./services/order-unit-service.js";
 import productService from "./services/product-service.js";
 import userService from "./services/user-service.js";
 import express from "express";
@@ -117,6 +118,7 @@ app.delete("/products/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/products", userService.authenticateUser, (req, res) => {
+  console.log("INVENTORY!");  
   const productToAdd = req.body;
   productService
     .addProduct(productToAdd)
@@ -190,6 +192,7 @@ app.get("/orders/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/orders", userService.authenticateUser, (req, res) => {
+  //console.log(req.body);
   const orderToAdd = req.body;
   orderService
     .addOrder(orderToAdd)
@@ -204,6 +207,58 @@ app.post("/orders", userService.authenticateUser, (req, res) => {
 app.delete("/orders/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   orderService
+    .removeOrder(id)
+    .then((result) => {
+      res.status(204).send(result);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
+
+//order-units routes
+app.get("/order-units", userService.authenticateUser, (req, res) => {
+  const id = req.query.id;
+  const product = req.query.product;
+  const quantity = req.query.quantity;
+  orderUnitService
+    .getOrder(id, product, quantity)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
+
+app.get("/order-units/:id", userService.authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  orderUnitService
+    .findOrderById(id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
+
+app.post("/order-units", userService.authenticateUser, (req, res) => {
+  const orderToAdd = req.body;
+  //console.log("POST: ", req.body);
+  orderUnitService
+    .addOrder(orderToAdd)
+    .then((result) => {
+      res.status(201).send(result);
+    })
+    .catch((error) => {
+      res.status(500).send(error.name);
+    });
+});
+
+app.delete("/order-units/:id", userService.authenticateUser, (req, res) => {
+  const id = req.params["id"];
+  orderUnitService
     .removeOrder(id)
     .then((result) => {
       res.status(204).send(result);
