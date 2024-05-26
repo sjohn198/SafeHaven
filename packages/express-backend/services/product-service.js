@@ -31,12 +31,13 @@ function removeProduct(id) {
 }
 
 function addProduct(product) {
-  console.log(product);
-  console.log("hi");
   return ProductModel.findOneAndUpdate(
-    { product: product.product },
-    { $inc: { quantity: product.quantity, price: product.price } },
-    { upsert: true, new: true }
+      { product: product.product },
+      {
+        $inc: { quantity: product.quantity },
+        $set: { price: product.price }
+      },
+      { upsert: true, new: true }
   );
 }
 
