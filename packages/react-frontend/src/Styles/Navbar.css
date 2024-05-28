@@ -143,3 +143,46 @@
 .logo {
   height: 82px;
 }
+
+.ProductPageLogo {
+  height: 150px;
+  display: block;
+  margin: 0 auto;
+}
+
+.subtitle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-top: 20px;
+}
+
+.subtitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #050107;
+}
+
+.edit-product-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a90e2;
+  margin-top: 20px;
+  position: absolute;
+  left: 50px; /* Adjust the left offset as needed */
+  top: 450px; /* Adjust the top offset as needed */
+}
+
+.input-container {
+  margin-left: 50px; /* Adjust the left margin as needed */
+}
+
+.input-container label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.input-container input {
+  width: 1300px; /* Adjust the width as needed */
+}

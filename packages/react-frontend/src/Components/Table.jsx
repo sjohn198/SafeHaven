@@ -9,6 +9,7 @@ function TableHeader() {
         <th>Quantity</th>
         <th>Price</th>
         <th>Remove</th>
+        <th>Edit</th>
       </tr>
     </thead>
   );
@@ -28,6 +29,11 @@ function TableBody(props) {
             <td>{row.price}</td>
             <td>
               <button onClick={() => props.removeProduct(index)}>Delete</button>
+            </td>
+            <td>
+              <a href={`http://localhost:5173/product/${row._id}`}>
+                <button>Edit</button>
+              </a>
             </td>
           </tr>
         );
