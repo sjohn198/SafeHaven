@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Inventory from "../Views/Inventory";
 import LoginPage from "../Views/LoginPage";
 import SignUpPage from "../Views/SignUpPage";
+import Logout from "../Components/Logout";
 import ManageOrders from "../Views/ManageOrders";
 import AddOrders from "../Views/AddOrders";
 import OrderStatistics from "../Views/OrderStatistics";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/manage-orders" element={<ManageOrders />} />
         <Route path="/add-orders" element={<AddOrders />} />
         <Route path="/statistics" element={<OrderStatistics />} />
@@ -67,6 +69,9 @@ function NavBar() {
             </li>
             <li>
               <Link to="/profile">Profile</Link>
+            </li>
+            <li>
+              <Link to="/logout">Logout</Link>
             </li>
           </div>
         </ul>

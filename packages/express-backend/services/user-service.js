@@ -49,20 +49,20 @@ function getPassword(username) {
   //same as get Users but uses findOne
   let query = {};
   query.username = username;
-  return UserModel.findOne(query, { password: 1 });
+  return UserModel.findOne(query, {_id: 1, password: 1 });
 }
 
 function getUsername(username) {
   //same as get Users but uses findOne
   let query = {};
   query.username = username;
-  return UserModel.findOne(query, { username: 1 });
+  return UserModel.findOne(query, { _id: 1, username: 1});
 }
 
-function generateAccessToken(username) {
+function generateAccessToken(userID) {
   return new Promise((resolve, reject) => {
     jwt.sign(
-      { username: username },
+      { _id: userID },
       process.env.TOKEN_SECRET,
       { expiresIn: "1d" },
       (error, token) => {
@@ -81,7 +81,7 @@ function loginUser(req, res) {
     .then((hashedPassword) => {
       getPassword(username).then((result) => {
         if (result !== null && result.password === hashedPassword) {
-          generateAccessToken(username)
+          generateAccessToken(result._id)
             .then((token) => {
               res.status(200).send(token);
             })
@@ -104,14 +104,19 @@ function signupUser(req, res) {
     res.status(400).send("Bad request: Invalid input data.");
   } else {
     getUsername(username).then((result) => {
-      if (result !== null && result.username === username) {
+      if (result !== null ) {
         res.status(409).send("Username already taken");
       } else {
         bcrypt.hash(password, salt).then((hashedPassword) => {
-          generateAccessToken(username).then((token) => {
-            console.log("Token:", token);
-            res.status(201).send(token);
-            addUser({ username: username, password: hashedPassword });
+          addUser({ username: username, password: hashedPassword }).then((savedUser) => {
+            generateAccessToken(savedUser._id).then((token) => {
+              console.log("Token:", token);
+              res.status(201).send(token);
+              }).catch((error) => {
+              res.status(500).send(error);
+              });
+          }).catch((error) => {
+            res.status(500).send(error);
           });
         });
       }
@@ -123,13 +128,14 @@ function authenticateUser(req, res, next) {
   const authHeader = req.headers["authorization"];
   //Getting the 2nd part of the auth header (the token)
   const token = authHeader && authHeader.split(" ")[1];
-
   if (!token) {
     console.log("No token received");
     res.status(401).end();
   } else {
     jwt.verify(token, process.env.TOKEN_SECRET, (error, decoded) => {
       if (decoded) {
+        req.userID = decoded._id;
+        //console.log(req.userID);
         next();
       } else {
         console.log("JWT error:", error);
