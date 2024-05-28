@@ -30,7 +30,9 @@ function Profile() {
     if (user.profilePicture) {
       fetchProfilePicture();
     }
-      getUser();
+    getUser().catch((error) => {
+      console.log(error);
+    });
   }, [user.profilePicture]);
 
   const handleFileChange = async (e) => {
