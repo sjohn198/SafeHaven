@@ -3,13 +3,13 @@ import axios from "axios";
 import "../Styles/Profile.css";
 import { addAuthHeader } from "../Components/helpers";
 
-function Profile({ user_id }) {
+function Profile() {
   const [profilePicture, setProfilePicture] = useState("");
   const [user, setUser] = useState({ bio: "", skills: ["", ""] });
 
   useEffect(() => {
     async function getUser() {
-      const user_details = await axios.get(`http://localhost:8000/users/${user_id.id}`, {
+      const user_details = await axios.get(`http://localhost:8000/users`, {
         headers: addAuthHeader()
       });
       const user = user_details.data;
@@ -30,11 +30,7 @@ function Profile({ user_id }) {
     if (user.profilePicture) {
       fetchProfilePicture();
     }
-    if (user_id) {
       getUser();
-    } else {
-      console.log("user id undefined");
-    }
   }, [user.profilePicture]);
 
   const handleFileChange = async (e) => {
