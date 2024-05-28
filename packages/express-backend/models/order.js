@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 const OrderSchema = new mongoose.Schema({
   items: [
     {
+      _id: {
+        type: String,
+        required: false
+      },
       product: {
         type: String,
         required: true
@@ -10,6 +14,10 @@ const OrderSchema = new mongoose.Schema({
       quantity: {
         type: Number,
         required: true
+      },
+      __v: {
+        type: Number,
+        required: false
       }
     }
   ],

@@ -47,25 +47,28 @@ function TableBody(props) {
   if (props.orderData === null) {
     return <caption>Data Unavailable</caption>;
   }
+  //console.log(props.orderData);
   const rows = props.orderData.map((order, index) => {
-    let arr_order = Array(order);
-    let count = 0;
+    let arr_order = Array(order["items"]);
+    //console.log(order["_id"])
+    console.log(order)
     if (order != undefined) {
       let each_item = arr_order.map((item) => {
         console.log(item);
         let item_arr = JSON.stringify(item).split(",");
         let item_id = item_arr[0].slice(item_arr[0].indexOf('"_id":') + 7, item_arr[0].length - 1);
-        console.log(item_id);
-        item = convertToDict(JSON.stringify(item));
-        const item_count = item[0]["item_count"];
-        let each_product = item.slice(1).map((product, index) => {
+        //console.log(item_id);
+        //item = convertToDict(JSON.stringify(item));
+        //const item_count = item[0]["item_count"];
+        let each_product = item.map((product, index) => {
+          console.log(product);
           return (
             <tr key={index}>
-              <td width="1000px">{product["_id"]}</td>
+              <td width="1000px">{order["_id"]}</td>
               <td>{product["product"]}</td>
               <td>{product["quantity"]}</td>
               <td>
-                <button onClick={() => props.removeProduct(item_id)}>Delete</button>
+                <button onClick={() => props.removeOrder(order["_id"])}>Delete</button>
               </td>
             </tr>
           );
@@ -82,7 +85,7 @@ function OrderTable(props) {
   return (
     <table>
       <TableHeader />
-      <TableBody orderData={props.orderData} removeProduct={props.removeOrder} />
+      <TableBody orderData={props.orderData} removeOrder={props.removeOrder} />
     </table>
   );
 }
