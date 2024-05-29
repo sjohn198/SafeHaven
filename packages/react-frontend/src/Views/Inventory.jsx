@@ -102,7 +102,7 @@ function Inventory() {
     <div className="ProductList">
       <h1>Inventory:</h1>
       <Table productData={products} removeProduct={removeOneProduct} />
-      <Form handleSubmit={updateList} text="Add to Inventory"/>
+      <Form handleSubmit={updateList} />
     </div>
   );
 }

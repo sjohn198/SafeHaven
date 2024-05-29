@@ -29,11 +29,11 @@ app.post(
 
     try {
       const result = await userService.uploadProfilePicture(file);
-      const user = await userService.getUsers(req.body.username, undefined, undefined);
+      const user = await userService.findUserById(req.userID);
 
       const pfp = { profilePicture: result._id };
 
-      fetch(`http://localhost:8000/users/${user[0]._id}`, {
+      fetch(`http://localhost:8000/users/${user._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -47,7 +47,7 @@ app.post(
   }
 );
 
-app.patch("/users/:id", userService.authenticateUser, (req, res) => {
+app.patch("/users/:id", (req, res) => {
   const id = req.params["id"];
   userService
     .changeUserProfilePicture(id, req.body.profilePicture)
@@ -101,22 +101,6 @@ app.get("/users", userService.authenticateUser, (req, res) => {
     });
 });
 
-app.get("/users/:id", userService.authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  userService
-    .findUserById(id)
-    .then((result) => {
-      if (result) {
-        res.send(result);
-      } else {
-        res.status(404).send(`Not found: ${id}`);
-      }
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
-    });
-});
-
 app.post("/login", (req, res) => {
   userService.loginUser(req, res);
 });
@@ -134,7 +118,7 @@ app.delete("/products/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/products", userService.authenticateUser, (req, res) => {
-  console.log("INVENTORY!");  
+  console.log("INVENTORY!");
   const productToAdd = req.body;
   productService
     .addProduct(productToAdd)
@@ -163,29 +147,13 @@ app.get("/products/:id", userService.authenticateUser, (req, res) => {
     });
 });
 
-app.patch("/products/:id", userService.authenticateUser, (req, res) => {
-  const id = req.params["id"];
-  const productChanges = req.body;
-  productService
-    .changeProductById(id, productChanges)
-    .then((result) => {
-      if (result) {
-        res.send(result);
-      } else {
-        res.status(404).send(`Not found: ${id}`);
-      }
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
-    });
-});
-
 app.get("/products", userService.authenticateUser, (req, res) => {
   const product = req.query.product;
   const quantity = req.query.quantity;
   productService
     .getProducts(product, quantity)
     .then((result) => {
+      console.log(req.userID);
       res.send(result);
     })
     .catch((error) => {
