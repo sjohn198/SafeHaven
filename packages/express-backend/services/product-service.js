@@ -31,25 +31,14 @@ function removeProduct(id) {
 }
 
 function addProduct(product) {
-  const updateObject = {
-    $set: { price: product.price },
-  };
-  
-  console.log(product.quantity)
-  console.log("HIIIIII")
-  console.log(product)
-  console.log("HI!!!")
-  // Only include $inc for quantity if it is not null
-  if (product.quantity !== null && product.quantity !== undefined && product.quantity !== '') {
-    updateObject.$inc = { quantity: product.quantity };
-  }
-  
   return ProductModel.findOneAndUpdate(
-    { product: product.product },
-    updateObject,
-    { upsert: true, new: true }
+      { product: product.product },
+      {
+        $inc: { quantity: product.quantity },
+        $set: { price: product.price }
+      },
+      { upsert: true, new: true }
   );
-  
 }
 
 function findProductByProduct(product) {
@@ -64,12 +53,6 @@ function findProductByProductAndQuantity(product, quantity) {
   return ProductModel.find({ product: product, quantity: quantity });
 }
 
-function changeProductById(id, product) {
-    console.log(product)
-    console.log("hi")
-    return ProductModel.findByIdAndUpdate(id, product, {new : true});  
-}
-
 export default {
   addProduct,
   removeProduct,
@@ -77,6 +60,5 @@ export default {
   findProductById,
   findProductByProduct,
   findProductByQuantity,
-  findProductByProductAndQuantity,
-  changeProductById
+  findProductByProductAndQuantity
 };

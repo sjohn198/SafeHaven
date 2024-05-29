@@ -44,7 +44,7 @@ function Form(props) {
       />
       <label htmlFor="price">price</label>
       <input type="text" name="price" id="price" value={order.price} onChange={handleChange} />
-      <input type="button" value={props.text} onClick={submitForm} />
+      <input type="button" value="Add to Order" onClick={submitForm} />
     </form>
   );
 }
