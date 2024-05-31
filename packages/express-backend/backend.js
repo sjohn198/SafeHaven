@@ -105,6 +105,18 @@ app.post("/login", (req, res) => {
   userService.loginUser(req, res);
 });
 
+app.delete("/users", userService.authenticateUser, (req, res) => {
+  const id = req.userID;
+  userService
+  .removeUser(id)
+  .then((result) => {
+    res.status(204).send(result);
+  })
+  .catch((error) => {
+    res.status(500).send(error.name);
+  });
+});
+
 app.delete("/products/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
   productService
