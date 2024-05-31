@@ -38,7 +38,7 @@ function ManageOrders() {
       .catch((error) => {
         console.log(error);
       });
-    };
+    }
 
   function fetchOrders() {
     return fetch("http://localhost:8000/orders", {
