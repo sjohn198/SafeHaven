@@ -57,7 +57,7 @@ function ManageOrders() {
   }
 
   return (
-    <div className="OrderList">
+    <div className="ProductList">
       <h1>Manage orders:</h1>
       <OrderTable orderData={orders} removeOrder={removeOneOrder} />
     </div>
