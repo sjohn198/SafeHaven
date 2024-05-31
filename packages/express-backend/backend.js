@@ -123,10 +123,16 @@ app.post("/login", (req, res) => {
 
 app.delete("/products/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
+  const userID = req.userID;
+  console.log(userID);
   productService
     .removeProduct(id)
     .then((result) => {
-      res.status(204).send(result);
+      console.log("plz");
+      userService.removeProductFromUserID(userID, id).then((Result) => {
+        console.log("hi");
+        res.status(204).send(Result);
+      });
     })
     .catch((error) => {
       res.status(500).send(error.name);
@@ -134,11 +140,13 @@ app.delete("/products/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/products", userService.authenticateUser, (req, res) => {
-  console.log("INVENTORY!");
   const productToAdd = req.body;
   productService
     .addProduct(productToAdd)
     .then((result) => {
+      const UserID = req.userID;
+      userService.addProductToUser(UserID, result.id);
+      console.log(result);
       res.status(201).send(result);
     })
     .catch((error) => {
@@ -180,17 +188,22 @@ app.patch("/products/:id", userService.authenticateUser, (req, res) => {
     });
 });
 
-app.get("/products", userService.authenticateUser, (req, res) => {
-  const product = req.query.product;
-  const quantity = req.query.quantity;
-  productService
-    .getProducts(product, quantity)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
+app.get("/products", userService.authenticateUser, async (req, res) => {
+  // const product = req.query.product;
+  // const quantity = req.query.quantity;
+  const UserID = req.userID;
+  try {
+    const user = await userService.findUserById(UserID);
+    productService.findProductsByIds(user.products).then((result) => {
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).send("Error retrieving user products");
+      }
     });
+  } catch (error) {
+    res.status(500).send("Error retrieving user products");
+  }
 });
 
 app.get("/", (req, res) => {
