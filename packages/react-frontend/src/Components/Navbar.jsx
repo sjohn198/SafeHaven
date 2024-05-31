@@ -9,6 +9,7 @@ import AddOrders from "../Views/AddOrders";
 import OrderStatistics from "../Views/OrderStatistics";
 import ProfilePage from "../Views/Profile";
 import ProductPage from "../Views/ProductPage"; // Import ProductPage component
+import AboutUs from "../Views/AboutUs";
 import "../Styles/Navbar.css";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage user_id={user} />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/about-us" element={<AboutUs/>}/>
       </Routes>
       <Footer />
     </Router>
