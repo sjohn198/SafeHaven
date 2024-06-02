@@ -26,30 +26,30 @@ function findProductById(id) {
   return ProductModel.findById(id);
 }
 
+function findProductsByIds(productIds) {
+  return ProductModel.find({ _id: { $in: productIds } });
+}
+
 function removeProduct(id) {
   return ProductModel.findByIdAndDelete(id);
 }
 
 function addProduct(product) {
   const updateObject = {
-    $set: { price: product.price },
+    $set: { price: product.price }
   };
-  
-  console.log(product.quantity)
-  console.log("HIIIIII")
-  console.log(product)
-  console.log("HI!!!")
+
+  console.log(product.quantity);
+  console.log(product);
   // Only include $inc for quantity if it is not null
-  if (product.quantity !== null && product.quantity !== undefined && product.quantity !== '') {
+  if (product.quantity !== null && product.quantity !== undefined && product.quantity !== "") {
     updateObject.$inc = { quantity: product.quantity };
   }
-  
-  return ProductModel.findOneAndUpdate(
-    { product: product.product },
-    updateObject,
-    { upsert: true, new: true }
-  );
-  
+
+  return ProductModel.findOneAndUpdate({ product: product.product }, updateObject, {
+    upsert: true,
+    new: true
+  });
 }
 
 function findProductByProduct(product) {
@@ -65,9 +65,9 @@ function findProductByProductAndQuantity(product, quantity) {
 }
 
 function changeProductById(id, product) {
-    console.log(product)
-    console.log("hi")
-    return ProductModel.findByIdAndUpdate(id, product, {new : true});  
+  console.log(product);
+  console.log("hi");
+  return ProductModel.findByIdAndUpdate(id, product, { new: true });
 }
 
 export default {
@@ -78,5 +78,6 @@ export default {
   findProductByProduct,
   findProductByQuantity,
   findProductByProductAndQuantity,
-  changeProductById
+  changeProductById,
+  findProductsByIds
 };

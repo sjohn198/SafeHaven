@@ -49,7 +49,7 @@ function getPassword(username) {
   //same as get Users but uses findOne
   let query = {};
   query.username = username;
-  return UserModel.findOne(query, { _id: 1, password: 1 });
+  return UserModel.findOne(query, {  _id: 1, password: 1 });
 }
 
 function getUsername(username) {
@@ -100,6 +100,7 @@ function signupUser(req, res) {
   } else {
     getUsername(username).then((result) => {
       if (result !== null) {
+      if (result !== null) {
         res.status(409).send("Username already taken");
       } else {
         bcrypt.hash(password, salt).then((hashedPassword) => {
@@ -113,6 +114,9 @@ function signupUser(req, res) {
                 .catch((error) => {
                   res.status(500).send(error);
                 });
+            })
+            .catch((error) => {
+              res.status(500).send(error);
             });
         });
       }
@@ -167,6 +171,29 @@ function addUser(user) {
   return promise;
 }
 
+async function addProductToUser(id, productId) {
+  try {
+    // Find the user and add the product to their list
+    console.log(id);
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    user.products.push(productId);
+    await user.save();
+
+    console.log(`Product ${productId} added to user ${id}`);
+  } catch (error) {
+    console.error("Error adding product to user:", error);
+  }
+}
+
+function removeProductFromUserID(userID, productIDToRemove) {
+  console.log("HELLO");
+  return UserModel.updateOne({ _id: userID }, { $pull: { products: productIDToRemove } });
+}
+
 export default {
   addUser,
   removeUser,
@@ -177,5 +204,7 @@ export default {
   findUserById,
   findProfilePictureById,
   uploadProfilePicture,
-  changeUserProfilePicture
+  changeUserProfilePicture,
+  addProductToUser,
+  removeProductFromUserID
 };
