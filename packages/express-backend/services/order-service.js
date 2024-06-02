@@ -24,6 +24,11 @@ function findOrderById(id) {
   return OrderModel.findById(id);
 }
 
+function search(search) {
+  console.log(search);
+  return OrderModel.find(search);
+}
+
 function removeOrder(id) {
   return OrderModel.findByIdAndDelete(id);
 }
@@ -43,5 +48,6 @@ export default {
   removeOrder,
   getOrder,
   findOrderById,
-  findOrderByProductAndQuantity
+  findOrderByProductAndQuantity,
+  search,
 };

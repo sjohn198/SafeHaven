@@ -118,7 +118,6 @@ app.delete("/products/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/products", userService.authenticateUser, (req, res) => {
-  console.log("INVENTORY!");
   const productToAdd = req.body;
   productService
     .addProduct(productToAdd)
@@ -170,20 +169,44 @@ app.get("/orders", userService.authenticateUser, (req, res) => {
   const id = req.query.id;
   const product = req.query.product;
   const quantity = req.query.quantity;
-  orderService
-    .getOrder(id, product, quantity)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
-    });
+  const search = req.query.search;
+  console.log(search);
+  let srch ={"items.product" : { $regex: search, $options: "i" }};
+  console.log(srch);
+  if(search === undefined){
+    console.log("Normal");
+    orderService
+      .getOrder(id, product, quantity)
+      .then((result) => {
+        console.log(result);
+        res.send(result);
+      })
+      .catch((error) => {
+        res.status(500).send(error.name);
+      });
+  } else {
+    console.log("Searching");
+    orderService
+      .search(srch)
+      .then((result) => {
+        console.log(result);
+        res.send(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send(error.name);
+      });
+  }
 });
 
-app.get("/orders/:id", userService.authenticateUser, (req, res) => {
-  const id = req.params["id"];
+
+app.get("/orders/:find", userService.authenticateUser, (req, res) => {
+  const find = req.params["find"];
+  console.log(find);
+  let srch = "{$or:{_id:{$regex:\"" + find + "\"}},{product:{$regex:\"" + find + "\"}},{quantity:{$regex:\"" + find + "\"}}]"; 
+  console.log("HERE");
   orderService
-    .findOrderById(id)
+    .find({srch})
     .then((result) => {
       res.send(result);
     })
