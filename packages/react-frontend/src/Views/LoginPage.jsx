@@ -19,6 +19,7 @@ function Login() {
       .then((response) => {
         if (!response.ok) {
           // Handle the case where the server returns an error
+          alert("Invalid username/password");
           throw new Error("Invalid username/password");
         }
         return response.text();

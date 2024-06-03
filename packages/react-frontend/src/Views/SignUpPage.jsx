@@ -18,7 +18,8 @@ function Signup() {
       .then((response) => {
         if (!response.ok) {
           // Handle the case where the server returns an error
-          throw new Error("Invalid username/password");
+          alert("Username already taken");
+          throw new Error("Username already taken");
         }
         return response.text();
       })

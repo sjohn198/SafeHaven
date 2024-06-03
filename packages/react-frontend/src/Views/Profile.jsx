@@ -77,6 +77,8 @@ function Profile() {
       if (res.status === 204)
         {
           Cookies.remove('safeHavenToken');
+          alert('Profile Deleted');
+          navigate('/'); //go to homepage
         }
     });
   }
