@@ -49,7 +49,7 @@ function getPassword(username) {
   //same as get Users but uses findOne
   let query = {};
   query.username = username;
-  return UserModel.findOne(query, { _id: 1, password: 1 });
+  return UserModel.findOne(query, {  _id: 1, password: 1 });
 }
 
 function getUsername(username) {
@@ -99,24 +99,20 @@ function signupUser(req, res) {
     res.status(400).send("Bad request: Invalid input data.");
   } else {
     getUsername(username).then((result) => {
-      if (result !== null) {
+      if (result !== null ) {
         res.status(409).send("Username already taken");
       } else {
         bcrypt.hash(password, salt).then((hashedPassword) => {
-          addUser({ username: username, password: hashedPassword })
-            .then((savedUser) => {
-              generateAccessToken(savedUser._id)
-                .then((token) => {
-                  console.log("Token:", token);
-                  res.status(201).send(token);
-                })
-                .catch((error) => {
-                  res.status(500).send(error);
-                });
-            })
-            .catch((error) => {
+          addUser({ username: username, password: hashedPassword }).then((savedUser) => {
+            generateAccessToken(savedUser._id).then((token) => {
+              console.log("Token:", token);
+              res.status(201).send(token);
+              }).catch((error) => {
               res.status(500).send(error);
-            });
+              });
+          }).catch((error) => {
+            res.status(500).send(error);
+          });
         });
       }
     });
@@ -193,6 +189,28 @@ function removeProductFromUserID(userID, productIDToRemove) {
   return UserModel.updateOne({ _id: userID }, { $pull: { products: productIDToRemove } });
 }
 
+async function addOrderToUser(id, orderId) {
+  try {
+    // Find the user and add the product to their list
+    console.log(id);
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    user.orders.push(orderId);
+    await user.save();
+
+    console.log(`Product ${orderId} added to user ${id}`);
+  } catch (error) {
+    console.error("Error adding product to user:", error);
+  }
+}
+
+function removeOrderFromUserID(userID, orderIDToRemove) {
+  console.log("HELLO");
+  return UserModel.updateOne({ _id: userID }, { $pull: { orders: orderIDToRemove } });
+}
 export default {
   addUser,
   removeUser,
@@ -205,5 +223,7 @@ export default {
   uploadProfilePicture,
   changeUserProfilePicture,
   addProductToUser,
-  removeProductFromUserID
+  removeProductFromUserID,
+  addOrderToUser,
+  removeOrderFromUserID
 };
