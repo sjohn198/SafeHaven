@@ -85,6 +85,23 @@ app.post("/users", (req, res) => {
   userService.signupUser(req, res);
 });
 
+app.post("/users/profile", userService.authenticateUser, (req, res) => {
+  const { bio, skills } = req.body; // from form
+  const id = req.userID;
+  userService.editProfile(id, bio, skills)
+  .then((result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(404).send(`Not found: ${id}`);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).send(error);
+  });
+});
+
 app.get("/users", userService.authenticateUser, (req, res) => {
   const id = req.userID;
   userService

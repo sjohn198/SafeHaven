@@ -77,6 +77,9 @@ function Profile() {
           Cookies.remove('safeHavenToken');
         }
     });
+  }
+  function editProfile() {
+    navigate("/profile/edit");
   } 
 
   return (
@@ -112,6 +115,9 @@ function Profile() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="button-container">
+        <button className="centered-button" onClick={editProfile}>Edit Profile</button>
       </div>
       <div className="button-container">
         <button className="centered-button" onClick={deleteProfile}>Delete Profile</button>
