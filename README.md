@@ -1,3 +1,5 @@
+Note for grader: Sequence Diagrams are the two '.png' files in the root of the repo
+
 To run from the repository's root folder, install concurrently with:
 
 ```

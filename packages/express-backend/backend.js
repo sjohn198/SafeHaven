@@ -22,6 +22,7 @@ app.post(
   userService.authenticateUser,
   async (req, res) => {
     const file = req.file;
+    const id = req.userID;
     if (!file) {
       res.status(400).send("No file uploaded");
       return;
@@ -29,11 +30,11 @@ app.post(
 
     try {
       const result = await userService.uploadProfilePicture(file);
-      const user = await userService.getUsers(req.body.username, undefined, undefined);
+      const user = await userService.findUserById(id);
 
       const pfp = { profilePicture: result._id };
 
-      fetch(`http://localhost:8000/users/${user[0]._id}`, {
+      fetch(`http://localhost:8000/users/${user._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -47,7 +48,7 @@ app.post(
   }
 );
 
-app.patch("/users/:id", userService.authenticateUser, (req, res) => {
+app.patch("/users/:id", (req, res) => {
   const id = req.params["id"];
   userService
     .changeUserProfilePicture(id, req.body.profilePicture)
