@@ -2,23 +2,21 @@ import React, { useState, useEffect } from "react";
 import Table from "../Components/Table";
 import Form from "../Components/Form";
 import "../Styles/Navbar.css";
-import {addAuthHeader} from '../Components/helpers'
+import { addAuthHeader } from "../Components/helpers";
 
 function Inventory() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     fetchProducts()
-      .then((res) => res.status === 200 ? res.json() : undefined
-    )
+      .then((res) => (res.status === 200 ? res.json() : undefined))
       .then((json) => {
-        if (json) { 
+        if (json) {
           setProducts(json);
-        }
-        else {
+        } else {
           setProducts(null);
         }
-        })
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -45,10 +43,10 @@ function Inventory() {
   }
 
   function updateList(product) {
-    if (typeof product.quantity === 'number') {
-        product.quantity = product.quantity.toString();
+    if (typeof product.quantity === "number") {
+      product.quantity = product.quantity.toString();
     }
-    
+
     postProduct(product)
       .then((res) => {
         if (res.status === 201) {
@@ -75,9 +73,9 @@ function Inventory() {
     return fetch("http://localhost:8000/products", {
       method: "POST",
       headers: addAuthHeader({
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       }),
-      body: JSON.stringify(product),
+      body: JSON.stringify(product)
     });
   }
 
@@ -86,18 +84,15 @@ function Inventory() {
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
-        "Content-Type": "application/json",
-      }),
+        "Content-Type": "application/json"
+      })
     });
   }
 
   return (
     <div className="ProductList">
-    <h1>Order stats:</h1>
-      <Table
-        productData={products}
-        removeProduct={removeOneProduct}
-      />
+      <h1>Order stats:</h1>
+      <Table productData={products} removeProduct={removeOneProduct} />
       <Form handleSubmit={updateList} />
     </div>
   );

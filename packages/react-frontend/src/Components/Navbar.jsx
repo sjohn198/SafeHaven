@@ -3,10 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Inventory from "../Views/Inventory";
 import LoginPage from "../Views/LoginPage";
 import SignUpPage from "../Views/SignUpPage";
+import Logout from "../Components/Logout";
 import ManageOrders from "../Views/ManageOrders";
 import AddOrders from "../Views/AddOrders";
 import OrderStatistics from "../Views/OrderStatistics";
 import ProfilePage from "../Views/Profile";
+import ProductPage from "../Views/ProductPage"; // Import ProductPage component
+import EditProfile from "../Views/EditProfile";
 import "../Styles/Navbar.css";
 
 function App() {
@@ -20,11 +23,14 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/manage-orders" element={<ManageOrders />} />
         <Route path="/add-orders" element={<AddOrders />} />
         <Route path="/statistics" element={<OrderStatistics />} />
         <Route path="/profile" element={<ProfilePage user_id={user} />} />
+        <Route path="/profile/edit" element={<EditProfile/>} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/product/:id" element={<ProductPage />} />
       </Routes>
       <Footer />
     </Router>
@@ -65,6 +71,9 @@ function NavBar() {
             </li>
             <li>
               <Link to="/profile">Profile</Link>
+            </li>
+            <li>
+              <Link to="/logout">Logout</Link>
             </li>
           </div>
         </ul>

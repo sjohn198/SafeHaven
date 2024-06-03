@@ -9,7 +9,7 @@ const profilePictureSchema = new mongoose.Schema({
   contentType: {
     type: String,
     required: true,
-    trim : true
+    trim: true
   }
 });
 

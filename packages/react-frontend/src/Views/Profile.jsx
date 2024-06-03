@@ -1,89 +1,101 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import '../Styles/Profile.css';
-import {addAuthHeader} from '../Components/helpers'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "../Styles/Profile.css";
+import { addAuthHeader } from "../Components/helpers";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 
-function Profile({ user_id }) {
-  const [profilePicture, setProfilePicture] = useState('');
-  const [user, setUser] = useState({bio : '', skills : ['', '']});
-
+function Profile() {
+  const navigate = useNavigate();
+  const [profilePicture, setProfilePicture] = useState("");
+  const [user, setUser] = useState({ bio: "", skills: ["", ""] });
 
   useEffect(() => {
     async function getUser() {
-        const user_details = await axios.get(`http://localhost:8000/users/${user_id.id}`, {
-          headers: addAuthHeader()
-        });
-        const user = user_details.data;
-        setUser(user);
+      const user_details = await axios.get(`http://localhost:8000/users`, {
+        headers: addAuthHeader()
+      });
+      const user = user_details.data;
+      setUser(user);
 
-            
-        const imageUrl = `http://localhost:8000/profile-picture/${user.profilePicture}`;
+      const imageUrl = `http://localhost:8000/profile-picture/${user.profilePicture}`;
 
-        setProfilePicture(imageUrl);
+      setProfilePicture(imageUrl);
     }
     async function fetchProfilePicture() {
-        try {
-            const imageUrl = `http://localhost:8000/profile-picture/${user.profilePicture}`;
-            setProfilePicture(imageUrl);
-        } catch (error) {
-            console.error('Failed to load user profile picture', error);
-        }
+      try {
+        const imageUrl = `http://localhost:8000/profile-picture/${user.profilePicture}`;
+        setProfilePicture(imageUrl);
+      } catch (error) {
+        console.error("Failed to load user profile picture", error);
+      }
     }
     if (user.profilePicture) {
-        fetchProfilePicture();
+      fetchProfilePicture();
     }
-    if (user_id) {
-        getUser();
-    }
-    else {
-        console.log("user id undefined");
-    }
+    getUser().catch((error) => {
+      console.log(error);
+    });
   }, [user.profilePicture]);
-        
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       const formData = new FormData();
-      formData.append('email', user.email);
-      formData.append('name', user.name);
-      formData.append('profilePicture', file);
+      formData.append("email", user.email);
+      formData.append("name", user.name);
+      formData.append("profilePicture", file);
 
       try {
         // Send the file to the server for processing and storage in MongoDB
-        const response = await axios.post('http://localhost:8000/profile-picture', formData, {
+        const response = await axios.post("http://localhost:8000/profile-picture", formData, {
           headers: addAuthHeader({
-            'Content-Type': 'multipart/form-data'
+            "Content-Type": "multipart/form-data"
           })
         });
-        
+
         console.log(response);
         const imageUrl = `http://localhost:8000/profile-picture/${response.data}`;
-        
+
         setProfilePicture(imageUrl);
-        
-        
-        console.log('Profile picture uploaded successfully');
+
+        console.log("Profile picture uploaded successfully");
       } catch (err) {
-        console.error('Error uploading profile picture:', err);
+        console.error("Error uploading profile picture:", err);
       }
     }
   };
 
+  function deleteProfile() {
+    fetch("http://localhost:8000/users", {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    }).then((res) => {
+      if (res.status === 204)
+        {
+          Cookies.remove('safeHavenToken');
+        }
+    });
+  }
+  function editProfile() {
+    navigate("/profile/edit");
+  } 
 
   return (
     <div>
       <div className="profile-container">
         <div className="profile-header">
           <label htmlFor="profile-picture-upload" className="profile-picture-label">
-            <img className="profile-avatar" src={profilePicture} alt={user.name}/>
+            <img className="profile-avatar" src={profilePicture} alt={user.name} />
             <input
               id="profile-picture-upload"
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             />
             <span className="upload-icon">Upload</span>
           </label>
@@ -105,6 +117,12 @@ function Profile({ user_id }) {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="button-container">
+        <button className="centered-button" onClick={editProfile}>Edit Profile</button>
+      </div>
+      <div className="button-container">
+        <button className="centered-button" onClick={deleteProfile}>Delete Profile</button>
       </div>
       <div className="bottom-margin"></div>
     </div>

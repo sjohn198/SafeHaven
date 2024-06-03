@@ -10,8 +10,7 @@ function Auth(props) {
     const { name, value } = event.target;
     if (name === "password") {
       setLogin({ username: userAuth["username"], password: value });
-    }      
-    else setLogin({ username: value, password: userAuth["password"] });
+    } else setLogin({ username: value, password: userAuth["password"] });
   }
 
   function submitForm() {
@@ -31,7 +30,7 @@ function Auth(props) {
       />
       <label htmlFor="password">password</label>
       <input
-        type="text"
+        type="password"
         name="password"
         id="password"
         value={userAuth.password}
@@ -39,8 +38,7 @@ function Auth(props) {
       />
       <input type="button" value="Submit" onClick={submitForm} />
     </form>
-    
-  )
+  );
 }
 
 export default Auth;
