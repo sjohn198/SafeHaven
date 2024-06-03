@@ -36,14 +36,8 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "ProfilePicture"
     },
-    products : {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "product"
-    },
-    orders : {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "order"
-    }
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }]
   },
   { collection: "users" }
 );
