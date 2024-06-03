@@ -24,9 +24,9 @@ function findOrderById(id) {
   return OrderModel.findById(id);
 }
 
-function search(search) {
+function search(orderIds, search) {
   console.log(search);
-  return OrderModel.find(search);
+  return OrderModel.find({ $and: [{ _id: { $in: orderIds } }, search]});
 }
 
 function removeOrder(id) {
@@ -43,6 +43,10 @@ function findOrderByProductAndQuantity(product, quantity) {
   return OrderModel.find({ product: product, quantity: quantity });
 }
 
+function findOrdersByIds(orderIds) {
+  return OrderModel.find({ _id: { $in: orderIds } });
+}
+
 export default {
   addOrder,
   removeOrder,
@@ -50,4 +54,5 @@ export default {
   findOrderById,
   findOrderByProductAndQuantity,
   search,
+  findOrdersByIds,
 };
