@@ -85,6 +85,23 @@ app.post("/users", (req, res) => {
   userService.signupUser(req, res);
 });
 
+app.post("/users/profile", userService.authenticateUser, (req, res) => {
+  const { bio, skills } = req.body; // from form
+  const id = req.userID;
+  userService.editProfile(id, bio, skills)
+  .then((result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(404).send(`Not found: ${id}`);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).send(error);
+  });
+});
+
 app.get("/users", userService.authenticateUser, (req, res) => {
   const id = req.userID;
   userService
@@ -119,6 +136,18 @@ app.get("/users/:id", userService.authenticateUser, (req, res) => {
 
 app.post("/login", (req, res) => {
   userService.loginUser(req, res);
+});
+
+app.delete("/users", userService.authenticateUser, (req, res) => {
+  const id = req.userID;
+  userService
+  .removeUser(id)
+  .then((result) => {
+    res.status(204).send(result);
+  })
+  .catch((error) => {
+    res.status(500).send(error.name);
+  });
 });
 
 app.delete("/products/:id", userService.authenticateUser, (req, res) => {

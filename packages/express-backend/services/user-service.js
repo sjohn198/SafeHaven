@@ -140,6 +140,17 @@ function authenticateUser(req, res, next) {
   }
 }
 
+function editProfile(id, bio, skills) {
+  return UserModel.findByIdAndUpdate(
+    id,
+    {
+      bio: bio,
+      skills: skills
+    },
+    {new: true}
+  );
+}
+
 function changeUserProfilePicture(id, profilePictureId) {
   return UserModel.findByIdAndUpdate(
     id,
@@ -222,6 +233,7 @@ export default {
   findProfilePictureById,
   uploadProfilePicture,
   changeUserProfilePicture,
+  editProfile,
   addProductToUser,
   removeProductFromUserID,
   addOrderToUser,
