@@ -24,7 +24,11 @@
   text-decoration: none;
 }
 
-.nav-list li a:hover {
+.hover a:hover {
+  background-color: #2980b9;
+}
+
+.dropdown a:hover {
   background-color: #2980b9;
 }
 
@@ -77,13 +81,13 @@
 }
 
 .logo {
-  padding: 0 1rem;
   color: red;
   display: block;
   text-align: center;
-  padding: 14px 20px;
   text-decoration: none;
-  margin-top: -12px;
+  width: 5rem;
+  max-height: 3rem;
+  margin-top: -10px;
 }
 
 .title {

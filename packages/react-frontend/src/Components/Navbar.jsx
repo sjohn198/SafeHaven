@@ -45,9 +45,11 @@ function NavBar() {
       <nav className="navbar">
         <ul className="nav-list">
           <li>
-            <img className="logo" src="../assets/yes.png" />
+            <a href="/">
+              <img className="logo" src="../assets/yes.png"/>
+            </a>
           </li>
-          <li>
+          <li className="hover">
             <Link to="/inventory">Inventory</Link>
           </li>
           <li className="dropdown">
@@ -65,16 +67,16 @@ function NavBar() {
             </ul>
           </li>
           <div className="left">
-            <li>
+            <li className="hover">
               <Link to="/signup">Sign up</Link>
             </li>
-            <li>
+            <li className="hover">
               <Link to="/login">Login</Link>
             </li>
-            <li>
+            <li className="hover">
               <Link to="/profile">Profile</Link>
             </li>
-            <li>
+            <li className="hover">
               <Link to="/logout">Logout</Link>
             </li>
           </div>
