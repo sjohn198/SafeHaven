@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../Styles/Profile.css";
 import { addAuthHeader } from "../Components/helpers";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
+
 
 function Profile() {
+  const navigate = useNavigate();
   const [profilePicture, setProfilePicture] = useState("");
   const [user, setUser] = useState({ bio: "", skills: ["", ""] });
 
@@ -63,6 +67,23 @@ function Profile() {
     }
   };
 
+  function deleteProfile() {
+    fetch("http://localhost:8000/users", {
+      method: "DELETE",
+      headers: addAuthHeader({
+        "Content-Type": "application/json"
+      })
+    }).then((res) => {
+      if (res.status === 204)
+        {
+          Cookies.remove('safeHavenToken');
+        }
+    });
+  }
+  function editProfile() {
+    navigate("/profile/edit");
+  } 
+
   return (
     <div>
       <div className="profile-container">
@@ -96,6 +117,12 @@ function Profile() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="button-container">
+        <button className="centered-button" onClick={editProfile}>Edit Profile</button>
+      </div>
+      <div className="button-container">
+        <button className="centered-button" onClick={deleteProfile}>Delete Profile</button>
       </div>
       <div className="bottom-margin"></div>
     </div>

@@ -85,6 +85,23 @@ app.post("/users", (req, res) => {
   userService.signupUser(req, res);
 });
 
+app.post("/users/profile", userService.authenticateUser, (req, res) => {
+  const { bio, skills } = req.body; // from form
+  const id = req.userID;
+  userService.editProfile(id, bio, skills)
+  .then((result) => {
+    if (result) {
+      res.send(result);
+    } else {
+      res.status(404).send(`Not found: ${id}`);
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+    res.status(500).send(error);
+  });
+});
+
 app.get("/users", userService.authenticateUser, (req, res) => {
   const id = req.userID;
   userService
@@ -121,12 +138,30 @@ app.post("/login", (req, res) => {
   userService.loginUser(req, res);
 });
 
+app.delete("/users", userService.authenticateUser, (req, res) => {
+  const id = req.userID;
+  userService
+  .removeUser(id)
+  .then((result) => {
+    res.status(204).send(result);
+  })
+  .catch((error) => {
+    res.status(500).send(error.name);
+  });
+});
+
 app.delete("/products/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
+  const userID = req.userID;
+  console.log(userID);
   productService
     .removeProduct(id)
     .then((result) => {
-      res.status(204).send(result);
+      console.log("plz");
+      userService.removeProductFromUserID(userID, id).then((Result) => {
+        console.log("hi");
+        res.status(204).send(Result);
+      });
     })
     .catch((error) => {
       res.status(500).send(error.name);
@@ -134,11 +169,13 @@ app.delete("/products/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/products", userService.authenticateUser, (req, res) => {
-  console.log("INVENTORY!");
   const productToAdd = req.body;
   productService
     .addProduct(productToAdd)
     .then((result) => {
+      const UserID = req.userID;
+      userService.addProductToUser(UserID, result.id);
+      console.log(result);
       res.status(201).send(result);
     })
     .catch((error) => {
@@ -180,17 +217,22 @@ app.patch("/products/:id", userService.authenticateUser, (req, res) => {
     });
 });
 
-app.get("/products", userService.authenticateUser, (req, res) => {
-  const product = req.query.product;
-  const quantity = req.query.quantity;
-  productService
-    .getProducts(product, quantity)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
+app.get("/products", userService.authenticateUser, async (req, res) => {
+  // const product = req.query.product;
+  // const quantity = req.query.quantity;
+  const UserID = req.userID;
+  try {
+    const user = await userService.findUserById(UserID);
+    productService.findProductsByIds(user.products).then((result) => {
+      if (result) {
+        res.send(result);
+      } else {
+        res.status(500).send("Error retrieving user products");
+      }
     });
+  } catch (error) {
+    res.status(500).send("Error retrieving user products");
+  }
 });
 
 app.get("/", (req, res) => {
@@ -198,24 +240,50 @@ app.get("/", (req, res) => {
 });
 
 //add_orders routes
-app.get("/orders", userService.authenticateUser, (req, res) => {
-  const id = req.query.id;
-  const product = req.query.product;
-  const quantity = req.query.quantity;
-  orderService
-    .getOrder(id, product, quantity)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
-    });
+app.get("/orders", userService.authenticateUser, async (req, res) => {
+  //const id = req.query.id;
+  //const product = req.query.product;
+  //const quantity = req.query.quantity;
+  const search = req.query.search;
+  const UserID = req.userID;
+  const user = await userService.findUserById(UserID);
+  console.log(search);
+  let srch ={"items.product" : { $regex: search, $options: "i" }};
+  console.log(srch);
+  if(search === undefined){
+    console.log("Normal");
+    orderService
+      .findOrdersByIds(user.orders)
+      .then((result) => {
+        console.log(result);
+        res.send(result);
+      })
+      .catch((error) => {
+        res.status(500).send(error.name);
+      });
+  } else {
+    console.log("Searching");
+    orderService
+      .search(user.orders, srch)
+      .then((result) => {
+        console.log(result);
+        res.send(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send(error.name);
+      });
+  }
 });
 
-app.get("/orders/:id", userService.authenticateUser, (req, res) => {
-  const id = req.params["id"];
+
+app.get("/orders/:find", userService.authenticateUser, (req, res) => {
+  const find = req.params["find"];
+  console.log(find);
+  let srch = "{$or:{_id:{$regex:\"" + find + "\"}},{product:{$regex:\"" + find + "\"}},{quantity:{$regex:\"" + find + "\"}}]"; 
+  console.log("HERE");
   orderService
-    .findOrderById(id)
+    .find({srch})
     .then((result) => {
       res.send(result);
     })
@@ -230,6 +298,9 @@ app.post("/orders", userService.authenticateUser, (req, res) => {
   orderService
     .addOrder(orderToAdd)
     .then((result) => {
+      const UserID = req.userID;
+      userService.addOrderToUser(UserID, result.id);
+      console.log(result);
       res.status(201).send(result);
     })
     .catch((error) => {
@@ -239,15 +310,20 @@ app.post("/orders", userService.authenticateUser, (req, res) => {
 
 app.delete("/orders/:id", userService.authenticateUser, (req, res) => {
   const id = req.params["id"];
+  const userID = req.userID;
   orderService
     .removeOrder(id)
     .then((result) => {
-      res.status(204).send(result);
+      userService.removeOrderFromUserID(userID, id).then((Result) => {
+        console.log("hi");
+        res.status(204).send(Result);
+      });
     })
     .catch((error) => {
       res.status(500).send(error.name);
     });
 });
+
 
 //order-units routes
 app.get("/order-units", userService.authenticateUser, (req, res) => {

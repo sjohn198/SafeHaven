@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OrderTable from "../Components/OrderTable";
+import SearchBar from "../Components/SearchBar";
 import "../Styles/Navbar.css";
 import { addAuthHeader } from "../Components/helpers";
 
@@ -46,6 +47,15 @@ function ManageOrders() {
     });
   }
 
+  function fetchSearch(search) {
+    search = "search=" + search;
+    const uri = `http://localhost:8000/orders/?${search}`;
+    console.log(uri);
+    return fetch(uri, {
+      headers: addAuthHeader()
+    });
+  }
+
   function deleteOrder(id) {
     const uri = `http://localhost:8000/orders/${id}`;
     return fetch(uri, {
@@ -56,9 +66,48 @@ function ManageOrders() {
     });
   }
 
+  function searchOrder(str) {
+    /*let temp_orders = orders;
+    let match_items = [];
+    temp_orders = temp_orders.filter((o) => 
+    {
+      let items = o["items"];
+      console.log(items); 
+      items = items.filter((i) =>
+      {
+        console.log(i);
+        console.log(i["product"].includes(str));
+        return(i["product"].includes(str));
+      });
+      console.log(items);
+      console.log(o);
+      if (items.length != 0){
+        return true;
+      }
+    });
+    console.log(temp_orders);*/
+    
+    console.log(str);
+    fetchSearch(str)
+      .then((res) => (res.status === 200 ? res.json() : undefined))
+      .then((json) => {
+
+        if (json) {
+          setOrders(json);
+        } else {
+          setOrders(null);
+        }
+        //console.log(orders);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <div className="ProductList">
       <h1>Manage orders:</h1>
+      <SearchBar search={searchOrder} />
       <OrderTable orderData={orders} removeOrder={removeOneOrder} />
     </div>
   );
