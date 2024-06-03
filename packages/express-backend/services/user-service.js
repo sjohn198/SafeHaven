@@ -49,27 +49,22 @@ function getPassword(username) {
   //same as get Users but uses findOne
   let query = {};
   query.username = username;
-  return UserModel.findOne(query, {_id: 1, password: 1 });
+  return UserModel.findOne(query, { _id: 1, password: 1 });
 }
 
 function getUsername(username) {
   //same as get Users but uses findOne
   let query = {};
   query.username = username;
-  return UserModel.findOne(query, { _id: 1, username: 1});
+  return UserModel.findOne(query, { _id: 1, username: 1 });
 }
 
 function generateAccessToken(userID) {
   return new Promise((resolve, reject) => {
-    jwt.sign(
-      { _id: userID },
-      process.env.TOKEN_SECRET,
-      { expiresIn: "1d" },
-      (error, token) => {
-        if (error) reject(error);
-        else resolve(token);
-      }
-    );
+    jwt.sign({ _id: userID }, process.env.TOKEN_SECRET, { expiresIn: "1d" }, (error, token) => {
+      if (error) reject(error);
+      else resolve(token);
+    });
   });
 }
 function loginUser(req, res) {
@@ -104,20 +99,24 @@ function signupUser(req, res) {
     res.status(400).send("Bad request: Invalid input data.");
   } else {
     getUsername(username).then((result) => {
-      if (result !== null ) {
+      if (result !== null) {
         res.status(409).send("Username already taken");
       } else {
         bcrypt.hash(password, salt).then((hashedPassword) => {
-          addUser({ username: username, password: hashedPassword }).then((savedUser) => {
-            generateAccessToken(savedUser._id).then((token) => {
-              console.log("Token:", token);
-              res.status(201).send(token);
-              }).catch((error) => {
+          addUser({ username: username, password: hashedPassword })
+            .then((savedUser) => {
+              generateAccessToken(savedUser._id)
+                .then((token) => {
+                  console.log("Token:", token);
+                  res.status(201).send(token);
+                })
+                .catch((error) => {
+                  res.status(500).send(error);
+                });
+            })
+            .catch((error) => {
               res.status(500).send(error);
-              });
-          }).catch((error) => {
-            res.status(500).send(error);
-          });
+            });
         });
       }
     });
@@ -182,6 +181,29 @@ function addUser(user) {
   return promise;
 }
 
+async function addProductToUser(id, productId) {
+  try {
+    // Find the user and add the product to their list
+    console.log(id);
+    const user = await UserModel.findById(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    user.products.push(productId);
+    await user.save();
+
+    console.log(`Product ${productId} added to user ${id}`);
+  } catch (error) {
+    console.error("Error adding product to user:", error);
+  }
+}
+
+function removeProductFromUserID(userID, productIDToRemove) {
+  console.log("HELLO");
+  return UserModel.updateOne({ _id: userID }, { $pull: { products: productIDToRemove } });
+}
+
 export default {
   addUser,
   removeUser,
@@ -193,5 +215,7 @@ export default {
   findProfilePictureById,
   uploadProfilePicture,
   changeUserProfilePicture,
-  editProfile
+  editProfile,
+  addProductToUser,
+  removeProductFromUserID
 };
