@@ -82,7 +82,7 @@ app.get("/profile-picture/:id", (req, res) => {
     });
 });
 
-app.post("/users", (req, res) => {
+app.post("/users", (req, res) => { 
   userService.signupUser(req, res);
 });
 
