@@ -26,6 +26,7 @@ jobs:
           npm install --workspaces=false
           npm install multer --workspaces=false
           npm install jsonwebtoken --workspaces=false
+          npm install bcrypt --workspaces=false
           npm run build --if-present
           npm run test --if-present
         working-directory: packages/express-backend
