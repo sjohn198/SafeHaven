@@ -76,13 +76,13 @@ function AddOrders() {
   }
 
   function fetchOrders() {
-    return fetch("http://localhost:8000/order-units", {
+    return fetch("safehaven307.azurewebsites.net/order-units", {
       headers: addAuthHeader()
     });
   }
 
   function postOrderUnit(order) {
-    return fetch("http://localhost:8000/order-units", {
+    return fetch("safehaven307.azurewebsites.net/order-units", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -92,7 +92,7 @@ function AddOrders() {
   }
 
   function deleteOrder(id) {
-    const uri = `http://localhost:8000/order-units/${id}`;
+    const uri = `safehaven307.azurewebsites.net/order-units/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
@@ -102,7 +102,7 @@ function AddOrders() {
   }
 
   function runPost(order_str) {
-    return fetch("http://localhost:8000/orders", {
+    return fetch("safehaven307.azurewebsites.net/orders", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"

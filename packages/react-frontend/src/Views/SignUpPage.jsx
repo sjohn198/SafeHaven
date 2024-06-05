@@ -8,7 +8,7 @@ function Signup() {
   const navigate = useNavigate();
   function createUser(user) {
     console.log(user);
-    fetch("http://localhost:8000/users", {
+    fetch("safehaven307.azurewebsites.net/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

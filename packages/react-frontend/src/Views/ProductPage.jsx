@@ -33,7 +33,7 @@ function ProductPage() {
 
   function fetchProduct(id) {
     console.log(`Fetching product with id: ${id}`);
-    return fetch(`http://localhost:8000/products/${id}`, {
+    return fetch(`safehaven307.azurewebsites.net/products/${id}`, {
       headers: addAuthHeader()
     })
       .then((res) => {
@@ -76,7 +76,7 @@ function ProductPage() {
 
   function patchProduct(product) {
     console.log("patching: ", product);
-    return fetch(`http://localhost:8000/products/${id}`, {
+    return fetch(`safehaven307.azurewebsites.net/products/${id}`, {
       method: "PATCH",
       headers: addAuthHeader({
         "Content-Type": "application/json"

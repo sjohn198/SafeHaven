@@ -42,14 +42,14 @@ function ManageOrders() {
     };
 
   function fetchOrders() {
-    return fetch("http://localhost:8000/orders", {
+    return fetch("safehaven307.azurewebsites.net/orders", {
       headers: addAuthHeader()
     });
   }
 
   function fetchSearch(search) {
     search = "search=" + search;
-    const uri = `http://localhost:8000/orders/?${search}`;
+    const uri = `safehaven307.azurewebsites.net/orders/?${search}`;
     console.log(uri);
     return fetch(uri, {
       headers: addAuthHeader()
@@ -57,7 +57,7 @@ function ManageOrders() {
   }
 
   function deleteOrder(id) {
-    const uri = `http://localhost:8000/orders/${id}`;
+    const uri = `safehaven307.azurewebsites.net/orders/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
@@ -67,25 +67,6 @@ function ManageOrders() {
   }
 
   function searchOrder(str) {
-    /*let temp_orders = orders;
-    let match_items = [];
-    temp_orders = temp_orders.filter((o) => 
-    {
-      let items = o["items"];
-      console.log(items); 
-      items = items.filter((i) =>
-      {
-        console.log(i);
-        console.log(i["product"].includes(str));
-        return(i["product"].includes(str));
-      });
-      console.log(items);
-      console.log(o);
-      if (items.length != 0){
-        return true;
-      }
-    });
-    console.log(temp_orders);*/
     
     console.log(str);
     fetchSearch(str)
