@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "cd packages/react-frontend && npm run build",
-    "start": "concurrently \"cd packages/express-backend && npm start\" \"cd packages/react-frontend && npm start\"",
+    "start": "cd packages/express-backend && npm start",
     "dev": "concurrently \"cd packages/express-backend && npm run dev\" \"cd packages/react-frontend && npm run dev\"",
     "prettier": "npx prettier . --write",
     "eslint": "npx eslint ."
