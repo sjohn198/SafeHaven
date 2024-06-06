@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy Node.js app to Azure Web App - SafeHaven2
 
 on:
@@ -23,35 +26,12 @@ jobs:
           cd packages/express-backend
           npm install
           cd ../../
-
-      - name: Prepare artifact directory
-        run: |
-          $artifactDir = "artifact"
-          $zipPath = "$artifactDir\node-app.zip"
-          if (Test-Path -Path $zipPath) {
-            Remove-Item -Path $zipPath -Force
-          }
-          if (Test-Path -Path $artifactDir) {
-            Remove-Item -Recurse -Force $artifactDir
-          }
-          New-Item -Path $artifactDir -ItemType Directory
-        shell: powershell
-
-      - name: Copy files to artifact directory
-        run: |
-          Get-ChildItem -Path . -Recurse | Copy-Item -Destination artifact2 -Force -PassThru
-        shell: powershell
-
-      - name: Create artifact archive
-        run: |
-          Compress-Archive -Path artifact2\* -DestinationPath artifact2\node-app.zip
-        shell: powershell
-
+      
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: artifact2/node-app.zip
+          path: .
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,18 +40,14 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write # This is required for requesting the JWT
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: node-app
-          path: ./artifact2
-
-      - name: Unzip artifact
-        run: unzip artifact2/node-app.zip -d ./artifact2
-
+      
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -85,4 +61,4 @@ jobs:
         with:
           app-name: 'SafeHaven2'
           slot-name: 'Production'
-          package: ./artifact2
+          package: .
