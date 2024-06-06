@@ -9,6 +9,8 @@ import AddOrders from "../Views/AddOrders";
 import OrderStatistics from "../Views/OrderStatistics";
 import ProfilePage from "../Views/Profile";
 import ProductPage from "../Views/ProductPage"; // Import ProductPage component
+import AboutUs from "../Views/AboutUs";
+import TermsAndConds from "../Views/TermsAndConds";
 import EditProfile from "../Views/EditProfile";
 import "../Styles/Navbar.css";
 
@@ -31,6 +33,8 @@ function App() {
         <Route path="/profile/edit" element={<EditProfile/>} />
         <Route path="/" element={<HomePage />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/about-us" element={<AboutUs/>}/>
+        <Route path="/terms-and-conditions" element={<TermsAndConds/>}/>
       </Routes>
       <Footer />
     </Router>
@@ -43,9 +47,11 @@ function NavBar() {
       <nav className="navbar">
         <ul className="nav-list">
           <li>
-            <img className="logo" src="../assets/yes.png" />
+            <a href="/">
+              <img className="logo" src="../assets/yes.png"/>
+            </a>
           </li>
-          <li>
+          <li className="hover">
             <Link to="/inventory">Inventory</Link>
           </li>
           <li className="dropdown">
@@ -63,16 +69,16 @@ function NavBar() {
             </ul>
           </li>
           <div className="left">
-            <li>
+            <li className="hover">
               <Link to="/signup">Sign up</Link>
             </li>
-            <li>
+            <li className="hover">
               <Link to="/login">Login</Link>
             </li>
-            <li>
+            <li className="hover">
               <Link to="/profile">Profile</Link>
             </li>
-            <li>
+            <li className="hover">
               <Link to="/logout">Logout</Link>
             </li>
           </div>
