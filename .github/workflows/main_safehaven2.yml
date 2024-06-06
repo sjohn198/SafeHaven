@@ -23,9 +23,9 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm ci
+          npm install
           cd packages/express-backend
-          npm ci
+          npm install
           cd ../../
       
       - name: Upload artifact for deployment job
