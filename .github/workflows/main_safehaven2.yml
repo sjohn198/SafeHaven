@@ -26,9 +26,8 @@ jobs:
 
       - name: Create artifact archive
         run: |
-          $zipfile = "artifact\node-app.zip"
-          $source = "."
-          [IO.Compression.ZipFile]::CreateFromDirectory($source, $zipfile)
+          New-Item -Path artifact -ItemType Directory
+          Compress-Archive -Path .\* -DestinationPath artifact\node-app.zip
         shell: powershell
 
       - name: Upload artifact for deployment job
