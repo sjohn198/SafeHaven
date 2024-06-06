@@ -36,8 +36,9 @@ jobs:
 
       - name: Create artifact archive
         run: |
-          Start-Sleep -Seconds 20
-          Compress-Archive -Path .\* -DestinationPath artifact\node-app.zip
+          Copy-Item -Path "artifact\node-app.zip" -Force -PassThru | 
+          Get-ChildItem |
+          Compress-Archive -Path .\* -DestinationPath "artifact\node-app.zip"
         shell: powershell
 
       - name: Upload artifact for deployment job
