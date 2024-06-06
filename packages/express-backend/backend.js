@@ -34,7 +34,7 @@ app.post(
 
       const pfp = { profilePicture: result._id };
 
-      fetch(`safehaven307.azurewebsites.net/users/${user._id}`, {
+      fetch(`https://safehaven2.azurewebsites.net/users/${user._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
