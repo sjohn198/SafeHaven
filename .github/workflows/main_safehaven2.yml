@@ -77,3 +77,4 @@ jobs:
           app-name: 'SafeHaven2'
           slot-name: 'Production'
           package: .
+          configuration-files: 'web.config'
