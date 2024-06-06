@@ -26,19 +26,25 @@ jobs:
 
       - name: Prepare artifact directory
         run: |
-          if (Test-Path -Path artifact\node-app.zip) {
-            Remove-Item -Path artifact\node-app.zip -Force
+          $artifactDir = "artifact"
+          $zipPath = "$artifactDir\node-app.zip"
+          if (Test-Path -Path $zipPath) {
+            Remove-Item -Path $zipPath -Force
           }
-          if (-Not (Test-Path -Path artifact)) {
-            New-Item -Path artifact -ItemType Directory
+          if (Test-Path -Path $artifactDir) {
+            Remove-Item -Recurse -Force $artifactDir
           }
+          New-Item -Path $artifactDir -ItemType Directory
+        shell: powershell
+
+      - name: Copy files to artifact directory
+        run: |
+          Get-ChildItem -Path . -Recurse | Copy-Item -Destination artifact -Force -PassThru
         shell: powershell
 
       - name: Create artifact archive
         run: |
-          Copy-Item -Path "artifact\node-app.zip" -Force -PassThru | 
-          Get-ChildItem |
-          Compress-Archive -Path .\* -DestinationPath "artifact\node-app.zip"
+          Compress-Archive -Path artifact\* -DestinationPath artifact\node-app.zip
         shell: powershell
 
       - name: Upload artifact for deployment job
