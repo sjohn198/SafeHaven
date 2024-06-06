@@ -26,8 +26,10 @@ jobs:
 
       - name: Create artifact archive
         run: |
-          mkdir -p artifact
-          zip -r artifact/node-app.zip .
+          $zipfile = "artifact\node-app.zip"
+          $source = "."
+          [IO.Compression.ZipFile]::CreateFromDirectory($source, $zipfile)
+        shell: powershell
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
