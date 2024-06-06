@@ -34,7 +34,7 @@ app.post(
 
       const pfp = { profilePicture: result._id };
 
-      fetch(`http://localhost:8000/users/${user._id}`, {
+      fetch(`safehaven307.azurewebsites.net/users/${user._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -379,5 +379,5 @@ app.delete("/order-units/:id", userService.authenticateUser, (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at safehaven307.azurewebsites.net:${port}`);
 });
