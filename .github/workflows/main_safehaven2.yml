@@ -29,6 +29,22 @@ jobs:
           npm install
           npm install
           npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
           npm ci
           cd ../../
 
