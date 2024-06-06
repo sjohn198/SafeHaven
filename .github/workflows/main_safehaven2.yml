@@ -24,24 +24,27 @@ jobs:
           npm install
           cd ../../
 
-      - name: Create artifact directory
+      - name: Prepare artifact directory
         run: |
-          if (Test-Path -Path artifact) {
-            Remove-Item -Recurse -Force artifact
+          if (Test-Path -Path artifact\node-app.zip) {
+            Remove-Item -Path artifact\node-app.zip -Force
           }
-          New-Item -Path artifact -ItemType Directory
+          if (-Not (Test-Path -Path artifact)) {
+            New-Item -Path artifact -ItemType Directory
+          }
         shell: powershell
 
       - name: Create artifact archive
         run: |
-          Compress-Archive -Path .\* -DestinationPath artifact\nodeapp.zip
+          Start-Sleep -Seconds 20
+          Compress-Archive -Path .\* -DestinationPath artifact\node-app.zip
         shell: powershell
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: nodeapp
-          path: artifact/nodeapp.zip
+          name: node-app
+          path: artifact/node-app.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,11 +59,11 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: nodeapp
+          name: node-app
           path: ./artifact
 
       - name: Unzip artifact
-        run: unzip artifact/nodeapp.zip -d ./artifact
+        run: unzip artifact/node-app.zip -d ./artifact
 
       - name: Login to Azure
         uses: azure/login@v1
