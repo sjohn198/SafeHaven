@@ -22,6 +22,14 @@ jobs:
         run: |
           cd packages/express-backend
           npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm install
+          npm ci
           cd ../../
 
       - name: Create artifact archive
