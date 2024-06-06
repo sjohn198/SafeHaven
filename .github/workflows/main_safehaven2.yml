@@ -71,9 +71,9 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_608B604CBDDF458FBBD38EB943ADE02F }}
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
         with:
           app-name: 'SafeHaven2'
           slot-name: 'Production'
-          package: node-app/packages/express-backend
+          package: .
