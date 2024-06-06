@@ -23,6 +23,7 @@ jobs:
           cd packages/express-backend
           npm install
           npm install multer
+          npm install cors
           npm install jsonwebtoken
           npm install bcrypt
           cd ../../
