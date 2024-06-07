@@ -38,6 +38,7 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "buffer": "^6.0.3",
+    "chart.js": "^4.4.3",
     "dotenv": "^16.4.5",
     "eslint-config-google": "^0.14.0",
     "js-cookie": "^3.0.5",

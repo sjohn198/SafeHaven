@@ -39,9 +39,6 @@ function addProduct(product) {
     $set: { price: product.price }
   };
 
-  console.log(product.quantity);
-  console.log(product);
-  // Only include $inc for quantity if it is not null
   if (product.quantity !== null && product.quantity !== undefined && product.quantity !== "") {
     updateObject.$inc = { quantity: product.quantity };
   }

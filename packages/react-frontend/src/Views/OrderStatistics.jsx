@@ -1,101 +1,75 @@
 import React, { useState, useEffect } from "react";
-import Table from "../Components/Table";
-import Form from "../Components/Form";
+import { Chart, registerables } from "chart.js";
 import "../Styles/Navbar.css";
 import { addAuthHeader } from "../Components/helpers";
 
-function Inventory() {
-  const [products, setProducts] = useState([]);
+Chart.register(...registerables);
+
+function Histogram() {
+  const [data, setData] = useState([]);
+  const [labels, setLabels] = useState([]);
+  const [chartInstance, setChartInstance] = useState(null);
 
   useEffect(() => {
-    fetchProducts()
-      .then((res) => (res.status === 200 ? res.json() : undefined))
-      .then((json) => {
-        if (json) {
-          setProducts(json);
-        } else {
-          setProducts(null);
-        }
+    const fetchData = async () => {
+      fetch("https://safehavenapp.azurewebsites.net//user-stats", {
+        headers: addAuthHeader()
       })
-      .catch((error) => {
-        console.log(error);
+      .then(res => res.json())
+      .then(responseData => {
+        const sortedData = Object.entries(responseData).sort(([labelA], [labelB]) => labelA.localeCompare(labelB));
+        const sortedLabels = sortedData.map(([label]) => label);
+        const sortedNumbers = sortedData.map(([, number]) => number);
+        setData(sortedNumbers);
+        setLabels(sortedLabels);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
       });
+    };
+
+    fetchData();
   }, []);
 
-  function removeOneProduct(index) {
-    let product_id = -1;
-    const updated = products.filter((product, i) => {
-      if (i === index) {
-        product_id = product["_id"];
-      }
-      return i !== index;
-    });
-    deleteProduct(product_id)
-      .then((res) => res.status)
-      .then((status) => {
-        if (status === 204) {
-          setProducts(updated);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function updateList(product) {
-    if (typeof product.quantity === "number") {
-      product.quantity = product.quantity.toString();
+  useEffect(() => {
+    if (chartInstance) {
+      chartInstance.destroy();
     }
 
-    postProduct(product)
-      .then((res) => {
-        if (res.status === 201) {
-          return res.json();
-        } else {
-          return;
-        }
-      })
-      .then((res) => {
-        setProducts([...products, res]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  function fetchProducts() {
-    return fetch("http://localhost:8000/products", {
-      headers: addAuthHeader()
+    const ctx = document.getElementById("histogram-chart");
+    const newChartInstance = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Histogram",
+            data: data,
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            type: "linear", 
+            beginAtZero: true,
+          },
+        },
+      },
     });
-  }
+    setChartInstance(newChartInstance);
 
-  function postProduct(product) {
-    return fetch("http://localhost:8000/products", {
-      method: "POST",
-      headers: addAuthHeader({
-        "Content-Type": "application/json"
-      }),
-      body: JSON.stringify(product)
-    });
-  }
+    return () => {
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+    };
+  }, [data, labels]);
 
-  function deleteProduct(id) {
-    const uri = `http://localhost:8000/products/${id}`;
-    return fetch(uri, {
-      method: "DELETE",
-      headers: addAuthHeader({
-        "Content-Type": "application/json"
-      })
-    });
-  }
-
-  return (
-    <div className="ProductList">
-      <h1>Order stats:</h1>
-      <Table productData={products} removeProduct={removeOneProduct} />
-      <Form handleSubmit={updateList} />
-    </div>
-  );
+  return <canvas id="histogram-chart" style={{ width: '100px', height: '100px' }}></canvas>;
 }
 
-export default Inventory;
+export default Histogram;

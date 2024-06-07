@@ -103,6 +103,13 @@ app.post("/users/profile", userService.authenticateUser, (req, res) => {
   });
 });
 
+app.get("/user-stats", userService.authenticateUser, (req, res) => {
+  const id = req.userID;
+  userService.getProductOrderCounts(id).then(result => {
+    res.send(result)
+  })
+})
+
 app.get("/users", userService.authenticateUser, (req, res) => {
   const id = req.userID;
   userService
@@ -294,13 +301,13 @@ app.get("/orders/:find", userService.authenticateUser, (req, res) => {
 });
 
 app.post("/orders", userService.authenticateUser, (req, res) => {
-  //console.log(req.body);
   const orderToAdd = req.body;
+  console.log(orderToAdd);
   orderService
     .addOrder(orderToAdd)
     .then((result) => {
       const UserID = req.userID;
-      userService.addOrderToUser(UserID, result.id);
+      userService.addOrderToUser(UserID, result);
       console.log(result);
       res.status(201).send(result);
     })
@@ -359,10 +366,17 @@ app.post("/order-units", userService.authenticateUser, (req, res) => {
   console.log(orderToAdd);
   userService.hasProduct(UserID, orderToAdd.product).then(has => {
     if (has) {
-      orderUnitService
-      .addOrder(orderToAdd)
-      .then((result) => {
-          res.status(201).send(result);
+      userService.quantityCheck(UserID, orderToAdd.product, orderToAdd.quantity).then(good => {
+        if (good == true) {
+          orderUnitService
+          .addOrder(orderToAdd)
+          .then((result) => {
+              res.status(201).send(result);
+          })
+        }
+        else {
+          res.status(400).send(good.toString());
+        }
       })
     } else {
       res.status(204).send(orderToAdd.product);

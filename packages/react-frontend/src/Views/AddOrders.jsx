@@ -46,30 +46,18 @@ function AddOrders() {
         if (res.status === 201) {
           return res.json();
         } else if (res.status === 204) {
-          alert(`Invalid order: ${order.product}`);
+          alert(`Invalid order for non-existent product: ${order.product}`);
+          return;
+        } else if (res.status === 400) {
+          res.json().then(quantity => {
+            alert(`There's not enough ${order.product} in stock! There's only ${quantity} left`)
+          })
           return;
         } else {
           return;
         }
       })
       .then((res) => {
-        // res = JSON.stringify(res).split(",");
-        // const item_count = Number(
-        //   res[res.length - 3].slice(res[res.length - 3].indexOf('"item_count":') + 13)
-        // );
-        // let temp_list = res;
-        // for (let i = 1; i < 3 * item_count; i++) {
-        //   let combo = temp_list[0] + ", " + temp_list[1];
-        //   temp_list = temp_list.slice(2);
-        //   temp_list.unshift(combo);
-        // }
-        // res = temp_list;
-        // let temp = res[0].slice(1);
-        // let temp2 = res[1];
-        // res[0] = "{" + res[2];
-        // res[1] = temp;
-        // res[2] = temp2;
-        // res = res.slice(1).reduce((accumulator, cur_val) => accumulator + ", " + cur_val, res[0]);
         if (res !== undefined) {
           setOrders([...orders, res]);
         }
@@ -80,13 +68,13 @@ function AddOrders() {
   }
 
   function fetchOrders() {
-    return fetch("http://localhost:8000/order-units", {
+    return fetch("https://safehavenapp.azurewebsites.net//order-units", {
       headers: addAuthHeader()
     });
   }
 
   function postOrderUnit(order) {
-    return fetch("http://localhost:8000/order-units", {
+    return fetch("https://safehavenapp.azurewebsites.net//order-units", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -96,7 +84,7 @@ function AddOrders() {
   }
 
   function deleteOrder(id) {
-    const uri = `http://localhost:8000/order-units/${id}`;
+    const uri = `https://safehavenapp.azurewebsites.net//order-units/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
@@ -106,7 +94,7 @@ function AddOrders() {
   }
 
   function runPost(order_str) {
-    return fetch("http://localhost:8000/orders", {
+    return fetch("https://safehavenapp.azurewebsites.net//orders", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
