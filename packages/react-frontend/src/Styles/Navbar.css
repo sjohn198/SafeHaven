@@ -216,3 +216,28 @@
   background-color: #f9f9f9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.widgets {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  padding-bottom: 100px;
+  margin-top: -150px;
+}
+
+.widget-square {
+  background-color: #2980b9;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.widget-square:hover {
+  background-color: #3498db;
+}
+
+.widget-square h3 {
+  margin: 0;
+}

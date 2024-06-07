@@ -3,9 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "./",
   "scripts": {
     "dev": "vite",
-    "start": "vite --host",
+    "start": "vite --host --port 80",
     "build": "vite build",
     "lint": "npx eslint .",
     "preview": "vite preview"

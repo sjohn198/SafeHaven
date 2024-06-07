@@ -196,32 +196,92 @@ async function addProductToUser(id, productId) {
 }
 
 function removeProductFromUserID(userID, productIDToRemove) {
-  console.log("HELLO");
   return UserModel.updateOne({ _id: userID }, { $pull: { products: productIDToRemove } });
 }
 
-async function addOrderToUser(id, orderId) {
+async function addOrderToUser(id, order) {
   try {
-    // Find the user and add the product to their list
-    console.log(id);
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(id).populate('products');
+    if (!user) {
+      throw new Error("User not found");
+    }
+    for (const item of order.items) {
+      const product = user.products.find(prod => prod.product === item.product);
+
+      if (!product) {
+        throw new Error(`Product ${item.product} not found for user ${id}`);
+      }
+      product.quantity -= item.quantity;
+      await product.save();
+    }
+    user.orders.push(order.id);
+    await user.save();
+
+    console.log(`Order ${order.id} added to user ${id}`);
+  } catch (error) {
+    console.error("Error adding order to user:", error);
+  }
+}
+
+async function getProductOrderCounts(userId) {
+  try {
+    const user = await UserModel.findById(userId).populate('products orders');
+
     if (!user) {
       throw new Error("User not found");
     }
 
-    user.orders.push(orderId);
-    await user.save();
 
-    console.log(`Product ${orderId} added to user ${id}`);
+    const productOrderCounts = {};
+    for (const product of user.products) {
+      let productCount = 0;
+      for (const order of user.orders) {
+        const orderContainsProduct = order.items.some(item => item.product === product.product);
+        if (orderContainsProduct) {
+          productCount++;
+        }
+      }
+      productOrderCounts[product.product] = productCount;
+    }
+    return productOrderCounts;
   } catch (error) {
-    console.error("Error adding product to user:", error);
+    console.error("Error getting product order counts:", error);
+    throw error;
   }
 }
 
+
 function removeOrderFromUserID(userID, orderIDToRemove) {
-  console.log("HELLO");
   return UserModel.updateOne({ _id: userID }, { $pull: { orders: orderIDToRemove } });
 }
+
+async function hasProduct(userID, productName) {
+    const user = await findUserById(userID).populate("products");
+    if (!user || !user.products) {
+        return false;
+    }
+    return user.products.some(product => product.product === productName);
+}
+
+async function quantityCheck(userID, productName, desiredQuantity) {
+  const user = await findUserById(userID).populate("products");
+  if (!user || !user.products) {
+      return false;
+  }
+  let product = null;
+  for (let i = 0; i < user.products.length; i++) {
+    if (user.products[i].product === productName) {
+        product = user.products[i];
+        break;
+    }
+}
+  if (product.quantity < desiredQuantity) {
+    return product.quantity;       
+  }
+  return true;
+}
+
+
 export default {
   addUser,
   removeUser,
@@ -237,5 +297,8 @@ export default {
   addProductToUser,
   removeProductFromUserID,
   addOrderToUser,
-  removeOrderFromUserID
+  removeOrderFromUserID,
+  hasProduct,
+  quantityCheck,
+  getProductOrderCounts
 };

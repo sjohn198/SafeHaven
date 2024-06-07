@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Inventory from "../Views/Inventory";
 import LoginPage from "../Views/LoginPage";
@@ -8,10 +8,11 @@ import ManageOrders from "../Views/ManageOrders";
 import AddOrders from "../Views/AddOrders";
 import OrderStatistics from "../Views/OrderStatistics";
 import ProfilePage from "../Views/Profile";
-import ProductPage from "../Views/ProductPage"; // Import ProductPage component
+import ProductPage from "../Views/ProductPage";
 import AboutUs from "../Views/AboutUs";
 import TermsAndConds from "../Views/TermsAndConds";
 import EditProfile from "../Views/EditProfile";
+
 import "../Styles/Navbar.css";
 
 function App() {
@@ -42,13 +43,22 @@ function App() {
 }
 
 function NavBar() {
+  const [src, setSrc] = useState('yes.png');
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setSrc('../yes.png');
+    img.onerror = () => setSrc('yes.png');
+    img.src = '../yes.png';
+  }, []);
+
   return (
     <div className="container">
       <nav className="navbar">
         <ul className="nav-list">
           <li>
             <a href="/">
-              <img className="logo" src="../assets/yes.png"/>
+              <img className="logo" src={src} alt="Logo"/>
             </a>
           </li>
           <li className="hover">
@@ -64,7 +74,7 @@ function NavBar() {
                 <Link to="/manage-orders">Manage Orders</Link>
               </li>
               <li className="dropdown-item">
-                <Link to="/add-orders">&nbsp;&nbsp;&nbsp;Add Orders</Link>
+                <Link to="/add-orders">Add Orders</Link>
               </li>
             </ul>
           </li>
@@ -91,6 +101,7 @@ function NavBar() {
   );
 }
 
+
 function Footer() {
   return (
     <footer className="footer">
@@ -108,7 +119,33 @@ function Footer() {
 }
 
 function HomePage() {
-  return <h1 className="title">Home page</h1>;
+  return (
+    <div>
+    <h1 className="title">Home page</h1>
+    <div className="widgets">
+      <div className="widget-square">
+        <Link to="/inventory">
+          <h3>Inventory</h3>
+        </Link>
+      </div>
+      <div className="widget-square">
+        <Link to="/manage-orders">
+          <h3>Manage Orders</h3>
+        </Link>
+      </div>
+      <div className="widget-square">
+        <Link to="/add-orders">
+          <h3>Add Orders</h3>
+        </Link>
+      </div>
+      <div className="widget-square">
+        <Link to="/statistics">
+          <h3>Order Statistics</h3>
+        </Link>
+      </div>
+    </div>
+  </div>
+  );
 }
 
 export default App;

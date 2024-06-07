@@ -33,7 +33,7 @@ function ProductPage() {
 
   function fetchProduct(id) {
     console.log(`Fetching product with id: ${id}`);
-    return fetch(`safehaven307.azurewebsites.net/products/${id}`, {
+    return fetch(`https://safehavenapp.azurewebsites.net//products/${id}`, {
       headers: addAuthHeader()
     })
       .then((res) => {
@@ -76,7 +76,7 @@ function ProductPage() {
 
   function patchProduct(product) {
     console.log("patching: ", product);
-    return fetch(`safehaven307.azurewebsites.net/products/${id}`, {
+    return fetch(`https://safehavenapp.azurewebsites.net//products/${id}`, {
       method: "PATCH",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -96,19 +96,14 @@ function ProductPage() {
   if (!product) {
     return (
       <div className="container">
-        <li>
-          <img className="ProductPageLogo" src="../assets/yes.png" alt="Loading" />
-        </li>
-        Loading...
+          <img className="ProductPageLogo" src="../yes.png" alt="Loading" />
       </div>
     );
   }
 
   return (
     <div>
-      <li>
-        <img className="ProductPageLogo" src="../assets/yes.png" alt="Loading" />
-      </li>
+      <img className="ProductPageLogo" src="../yes.png" alt="Loading"/>
       <div className="subtitle-container">
         <h2 className="subtitle">Your Product: {product.product}</h2>
       </div>

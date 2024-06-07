@@ -29,7 +29,6 @@ function removeOrder(id) {
 }
 
 function addOrder(order_unit) {
-  //console.log(order_unit);
   const OrderToAdd = new OrderUnitModel(order_unit);
   const promise = OrderToAdd.save();
   return promise;

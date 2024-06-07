@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build": "cd packages/react-frontend && npm run build",
-    "start": "cd packages/express-backend && npm start",
+    "start": "concurrently \"cd packages/express-backend && npm start\" \"cd packages/react-frontend && npm start\"",
     "dev": "concurrently \"cd packages/express-backend && npm run dev\" \"cd packages/react-frontend && npm run dev\"",
     "prettier": "npx prettier . --write",
     "eslint": "npx eslint ."
@@ -38,6 +38,7 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "buffer": "^6.0.3",
+    "chart.js": "^4.4.3",
     "dotenv": "^16.4.5",
     "eslint-config-google": "^0.14.0",
     "js-cookie": "^3.0.5",
