@@ -13,19 +13,19 @@ function Profile() {
 
   useEffect(() => {
     async function getUser() {
-      const user_details = await axios.get(`https://safehavenapp.azurewebsites.net/users`, {
+      const user_details = await axios.get(`http://localhost:8000/users`, {
         headers: addAuthHeader()
       });
       const user = user_details.data;
       setUser(user);
 
-      const imageUrl = `https://safehavenapp.azurewebsites.net/profile-picture/${user.profilePicture}`;
+      const imageUrl = `http://localhost:8000/profile-picture/${user.profilePicture}`;
 
       setProfilePicture(imageUrl);
     }
     async function fetchProfilePicture() {
       try {
-        const imageUrl = `https://safehavenapp.azurewebsites.net/profile-picture/${user.profilePicture}`;
+        const imageUrl = `http://localhost:8000/profile-picture/${user.profilePicture}`;
         setProfilePicture(imageUrl);
       } catch (error) {
         console.error("Failed to load user profile picture", error);
@@ -49,14 +49,14 @@ function Profile() {
 
       try {
         // Send the file to the server for processing and storage in MongoDB
-        const response = await axios.post("https://safehavenapp.azurewebsites.net/profile-picture", formData, {
+        const response = await axios.post("http://localhost:8000/profile-picture", formData, {
           headers: addAuthHeader({
             "Content-Type": "multipart/form-data"
           })
         });
 
         console.log(response);
-        const imageUrl = `https://safehavenapp.azurewebsites.net/profile-picture/${response.data}`;
+        const imageUrl = `http://localhost:8000/profile-picture/${response.data}`;
 
         setProfilePicture(imageUrl);
 
@@ -68,7 +68,7 @@ function Profile() {
   };
 
   function deleteProfile() {
-    fetch("https://safehavenapp.azurewebsites.net/users", {
+    fetch("http://localhost:8000/users", {
       method: "DELETE",
       headers: addAuthHeader({
         "Content-Type": "application/json"

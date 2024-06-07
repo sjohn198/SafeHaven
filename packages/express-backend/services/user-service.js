@@ -196,14 +196,11 @@ async function addProductToUser(id, productId) {
 }
 
 function removeProductFromUserID(userID, productIDToRemove) {
-  console.log("HELLO");
   return UserModel.updateOne({ _id: userID }, { $pull: { products: productIDToRemove } });
 }
 
 async function addOrderToUser(id, orderId) {
   try {
-    // Find the user and add the product to their list
-    console.log(id);
     const user = await UserModel.findById(id);
     if (!user) {
       throw new Error("User not found");
@@ -219,9 +216,20 @@ async function addOrderToUser(id, orderId) {
 }
 
 function removeOrderFromUserID(userID, orderIDToRemove) {
-  console.log("HELLO");
   return UserModel.updateOne({ _id: userID }, { $pull: { orders: orderIDToRemove } });
 }
+
+async function hasProduct(userID, productName) {
+    const user = await findUserById(userID).populate("products");
+    if (!user || !user.products) {
+        return false;
+    }
+    console.log("delapaz")
+    console.log(user.products)
+    console.log(productName)
+    return user.products.some(product => product.product === productName);
+}
+
 export default {
   addUser,
   removeUser,
@@ -237,5 +245,6 @@ export default {
   addProductToUser,
   removeProductFromUserID,
   addOrderToUser,
-  removeOrderFromUserID
+  removeOrderFromUserID,
+  hasProduct
 };

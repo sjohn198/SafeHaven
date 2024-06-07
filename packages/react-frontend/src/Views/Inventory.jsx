@@ -71,7 +71,7 @@ function Inventory() {
   }
 
   function fetchProducts() {
-    const promise = fetch("https://safehavenapp.azurewebsites.net/products", {
+    const promise = fetch("http://localhost:8000/products", {
       headers: addAuthHeader()
     });
     return promise;
@@ -79,7 +79,7 @@ function Inventory() {
 
   function postProduct(product) {
     console.log("posting:", product);
-    return fetch("https://safehavenapp.azurewebsites.net/products", {
+    return fetch("http://localhost:8000/products", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -89,7 +89,7 @@ function Inventory() {
   }
 
   function deleteProduct(id) {
-    const uri = `https://safehavenapp.azurewebsites.net/products/${id}`;
+    const uri = `http://localhost:8000/products/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({

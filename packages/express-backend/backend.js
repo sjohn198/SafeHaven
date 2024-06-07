@@ -34,7 +34,7 @@ app.post(
 
       const pfp = { profilePicture: result._id };
 
-      fetch(`https://safehaven2.azurewebsites.net/users/${user._id}`, {
+      fetch(`safehaven307.azurewebsites.net/users/${user._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -355,15 +355,22 @@ app.get("/order-units/:id", userService.authenticateUser, (req, res) => {
 
 app.post("/order-units", userService.authenticateUser, (req, res) => {
   const orderToAdd = req.body;
-  //console.log("POST: ", req.body);
-  orderUnitService
-    .addOrder(orderToAdd)
-    .then((result) => {
-      res.status(201).send(result);
-    })
-    .catch((error) => {
-      res.status(500).send(error.name);
-    });
+  const UserID = req.userID;
+  console.log(orderToAdd);
+  userService.hasProduct(UserID, orderToAdd.product).then(has => {
+    if (has) {
+      orderUnitService
+      .addOrder(orderToAdd)
+      .then((result) => {
+          res.status(201).send(result);
+      })
+    } else {
+      res.status(204).send(orderToAdd.product);
+    }
+  })
+  .catch(error => {
+    res.status(500).json({ error: error.name });
+  });
 });
 
 app.delete("/order-units/:id", userService.authenticateUser, (req, res) => {
@@ -378,6 +385,6 @@ app.delete("/order-units/:id", userService.authenticateUser, (req, res) => {
     });
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at safehaven307.azurewebsites.net:${port}`);
 });

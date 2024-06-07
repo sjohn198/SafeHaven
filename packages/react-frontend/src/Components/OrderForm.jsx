@@ -15,7 +15,7 @@ function OrderForm(props) {
 
   const addToList = () => {
     props.handleSubmit(order);
-    setOrder({ product: "", quantity: "" }); // Reset form state
+    setOrder({ product: "", quantity: "" });
   };
 
   return (

@@ -45,6 +45,9 @@ function AddOrders() {
       .then((res) => {
         if (res.status === 201) {
           return res.json();
+        } else if (res.status === 204) {
+          alert(`Invalid order: ${order.product}`);
+          return;
         } else {
           return;
         }
@@ -67,8 +70,9 @@ function AddOrders() {
         // res[1] = temp;
         // res[2] = temp2;
         // res = res.slice(1).reduce((accumulator, cur_val) => accumulator + ", " + cur_val, res[0]);
-        
-        setOrders([...orders, res]);
+        if (res !== undefined) {
+          setOrders([...orders, res]);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -76,13 +80,13 @@ function AddOrders() {
   }
 
   function fetchOrders() {
-    return fetch("https://safehavenapp.azurewebsites.net/order-units", {
+    return fetch("http://localhost:8000/order-units", {
       headers: addAuthHeader()
     });
   }
 
   function postOrderUnit(order) {
-    return fetch("https://safehavenapp.azurewebsites.net/order-units", {
+    return fetch("http://localhost:8000/order-units", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
@@ -92,7 +96,7 @@ function AddOrders() {
   }
 
   function deleteOrder(id) {
-    const uri = `https://safehavenapp.azurewebsites.net/order-units/${id}`;
+    const uri = `http://localhost:8000/order-units/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
@@ -102,7 +106,7 @@ function AddOrders() {
   }
 
   function runPost(order_str) {
-    return fetch("https://safehavenapp.azurewebsites.net/orders", {
+    return fetch("http://localhost:8000/orders", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"

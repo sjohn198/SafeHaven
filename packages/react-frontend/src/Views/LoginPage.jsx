@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
   function authenticateUser(user) {
     console.log(user);
-    fetch("https://safehavenapp.azurewebsites.net/login", {
+    fetch("http://localhost:8000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

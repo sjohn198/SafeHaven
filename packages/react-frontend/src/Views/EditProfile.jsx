@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 function EditProfile() {
   const navigate = useNavigate();
   function changeProfile(profile){
-    fetch("https://safehavenapp.azurewebsites.net/users/profile", {
+    fetch("http://localhost:8000/users/profile", {
       method: "POST",
       headers: addAuthHeader({
         "Content-Type": "application/json"
