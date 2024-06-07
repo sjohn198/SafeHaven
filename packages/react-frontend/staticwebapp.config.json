@@ -1,6 +1,27 @@
 {
+    "routes": [
+      {
+        "route": "/images/*",
+        "serve": "/images"
+      },
+      {
+        "route": "/*",
+        "serve": "/index.html",
+        "statusCode": 200
+      }
+    ],
     "navigationFallback": {
-        "rewrite": "/index.html",
-        "exclude": ["/Images/*.{png,jpg,gif}"]
+      "rewrite": "/index.html",
+      "exclude": ["/images/*"]
+    },
+    "headers": {
+      "source": "/images/*",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "image/png"
+        }
+      ]
     }
-}
+  }
+  
