@@ -8,7 +8,7 @@ import ManageOrders from "../Views/ManageOrders";
 import AddOrders from "../Views/AddOrders";
 import OrderStatistics from "../Views/OrderStatistics";
 import ProfilePage from "../Views/Profile";
-import ProductPage from "../Views/ProductPage"; // Import ProductPage component
+import ProductPage from "../Views/ProductPage";
 import AboutUs from "../Views/AboutUs";
 import TermsAndConds from "../Views/TermsAndConds";
 import EditProfile from "../Views/EditProfile";
