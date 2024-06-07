@@ -42,14 +42,14 @@ function ManageOrders() {
     };
 
   function fetchOrders() {
-    return fetch("https://safehaven2.azurewebsites.net/orders", {
+    return fetch("https://safehavenapp.azurewebsites.net/orders", {
       headers: addAuthHeader()
     });
   }
 
   function fetchSearch(search) {
     search = "search=" + search;
-    const uri = `https://safehaven2.azurewebsites.net/orders/?${search}`;
+    const uri = `https://safehavenapp.azurewebsites.net/orders/?${search}`;
     console.log(uri);
     return fetch(uri, {
       headers: addAuthHeader()
@@ -57,7 +57,7 @@ function ManageOrders() {
   }
 
   function deleteOrder(id) {
-    const uri = `https://safehaven2.azurewebsites.net/orders/${id}`;
+    const uri = `https://safehavenapp.azurewebsites.net/orders/${id}`;
     return fetch(uri, {
       method: "DELETE",
       headers: addAuthHeader({
