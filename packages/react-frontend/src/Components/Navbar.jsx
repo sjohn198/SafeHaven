@@ -48,11 +48,12 @@ function NavBar() {
         <ul className="nav-list">
           <li>
             <a href="/">
-              <img className="logo" src="../vite.png"/>
-              <img className="logo" src="public/vite.svg"/>
-              <img className="logo" src="./vite.svg"/>
-              <img className="logo" src="./assets/vite.svg"/>
-              <img className="logo" src="../assets/vite.svg"/>
+              <img className="logo" src="src/Images/yes.png"/>
+              <img className="logo" src="assets/yes.png"/>
+              <img className="logo" src="yes.png"/>
+              <img className="logo" src="../yes.png"/>
+              <img className="logo" src="../Images/yes.png"/>
+              <img className="logo" src="./Images/yes.png"/>
             </a>
           </li>
           <li className="hover">
