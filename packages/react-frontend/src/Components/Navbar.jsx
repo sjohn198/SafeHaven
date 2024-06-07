@@ -49,7 +49,6 @@ function NavBar() {
           <li>
             <a href="/">
               <img className="logo" src="yes.png"/>
-              <img className="logo" src="../yes.png"/>
             </a>
           </li>
           <li className="hover">
