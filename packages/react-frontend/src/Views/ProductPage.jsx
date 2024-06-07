@@ -96,19 +96,14 @@ function ProductPage() {
   if (!product) {
     return (
       <div className="container">
-        <li>
           <img className="ProductPageLogo" src="../yes.png" alt="Loading" />
-        </li>
-        Loading...
       </div>
     );
   }
 
   return (
     <div>
-      <li>
-        <img className="ProductPageLogo" src="../yes.png" alt="Loading" />
-      </li>
+      <img className="ProductPageLogo" src="../yes.png" alt="Loading"/>
       <div className="subtitle-container">
         <h2 className="subtitle">Your Product: {product.product}</h2>
       </div>
