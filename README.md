@@ -27,6 +27,7 @@ Project Description:
 SafeHaven is a company dedicated to optimizing storage management solutions for businesses. Our product scales easily, displays critical order insights, and is affordably priced.
 We offer a seamless inventory and order tracking system, suiting the needs of businesses in many industries.
 
+
 Note for grader: Sequence Diagrams are the two '.png' files in the root of the repo
 
 To run from the repository's root folder, install concurrently with:
@@ -55,6 +56,7 @@ and
 Project Description:
 SafeHaven is a company dedicated to optimizing storage management solutions for businesses. Our product scales easily, displays critical order insights, and is affordably priced.
 We offer a seamless inventory and order tracking system, suiting the needs of businesses in many industries.
+
 
 CSC307 Safe Haven Demo Video:
 https://youtu.be/EfknrWC4x_U
