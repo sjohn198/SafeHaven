@@ -378,6 +378,6 @@ app.delete("/order-units/:id", userService.authenticateUser, (req, res) => {
     });
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log(`Example app listening at safehaven307.azurewebsites.net:${port}`);
 });
