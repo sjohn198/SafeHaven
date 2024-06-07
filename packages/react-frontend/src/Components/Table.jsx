@@ -31,7 +31,7 @@ function TableBody(props) {
               <button onClick={() => props.removeProduct(index)}>Delete</button>
             </td>
             <td>
-              <a href={`https://safehavenapp.azurewebsites.net/products/${row._id}`}>
+              <a href={`https://lively-ground-0cd068c1e.5.azurestaticapps.net/product/${row._id}`}>
                 <button>Edit</button>
               </a>
             </td>
