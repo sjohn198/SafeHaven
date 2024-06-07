@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Inventory from "../Views/Inventory";
 import LoginPage from "../Views/LoginPage";
@@ -42,13 +42,22 @@ function App() {
 }
 
 function NavBar() {
+  const [src, setSrc] = useState('yes.png');
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => setSrc('../yes.png');
+    img.onerror = () => setSrc('yes.png');
+    img.src = '../yes.png';
+  }, []);
+
   return (
     <div className="container">
       <nav className="navbar">
         <ul className="nav-list">
           <li>
             <a href="/">
-              <img className="logo" src="yes.png"/>
+              <img className="logo" src={src} alt="Logo"/>
             </a>
           </li>
           <li className="hover">

@@ -107,7 +107,7 @@ function ProductPage() {
   return (
     <div>
       <li>
-        <img className="ProductPageLogo" src="yes.png" alt="Loading" />
+        <img className="ProductPageLogo" src="..yes.png" alt="Loading" />
       </li>
       <div className="subtitle-container">
         <h2 className="subtitle">Your Product: {product.product}</h2>
